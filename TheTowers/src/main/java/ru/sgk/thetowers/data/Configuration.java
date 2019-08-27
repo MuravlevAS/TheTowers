@@ -24,9 +24,12 @@ public class Configuration {
 			InputStream in = MainTowers.class.getResourceAsStream("/" + filename);
 			Reader reader = new InputStreamReader(in))
 		{
+			// loading config
 			config = YamlConfiguration.loadConfiguration(file);
+			// set defaults to the config
 			config.setDefaults(YamlConfiguration.loadConfiguration(reader));
 			config.options().copyDefaults(true);
+
 			saveConfiguration(config, filename);
 			Logs.sendDebugMessage(filename + " has loaded");
 		}

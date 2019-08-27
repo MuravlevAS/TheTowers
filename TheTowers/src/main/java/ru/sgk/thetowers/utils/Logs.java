@@ -1,14 +1,23 @@
 package ru.sgk.thetowers.utils;
 
-import java.util.logging.Logger;
+import org.bukkit.configuration.file.FileConfiguration;
 
-import org.bukkit.Bukkit;
+import ru.sgk.thetowers.data.Configurations;
 
 public class Logs {
-	private static final String PREFIX = "§e[TheTowers]";
-	private static Logger logger = Bukkit.getLogger();
 	private static boolean debug = true;
-	private static final String DEBUG_PREFIX = PREFIX + " §c§l[DEBUG]";
+	
+	public static void init()
+	{
+		Logs.send("Checking for debug mode.");
+		FileConfiguration config;
+		if ((config = Configurations.getConfig()) != null)
+		{
+			debug = config.getBoolean("debug", false);
+		} else debug = false;
+		if (debug) Logs.send("Debug mode is enable.");
+		else   Logs.send("Debug mode is disable.");
+	}
 	
 	/**
 	 * Sends message to console with plugin prefix 
@@ -16,7 +25,7 @@ public class Logs {
 	 */
 	public static void send(String message)
 	{
-		logger.info(PREFIX + "§r " + message);
+		Consts.logger.info(Consts.PREFIX + "§r " + message);
 		
 	}
 	/**
@@ -25,17 +34,12 @@ public class Logs {
 	 */
 	public static void sendDebugMessage(String debugMessage)
 	{
-		if (debug) logger.info(DEBUG_PREFIX + "§r " + debugMessage);
+		if (debug) Consts.logger.info(Consts.DEBUG_PREFIX + "§r " + debugMessage);
 	}
 	
 	public static void setDebug(boolean debug)
 	{
-		Logs.debug = debug;
-	}
-	
-	public static void setLoggger(Logger logger)
-	{
-		Logs.logger = logger;
+		if (Logs.debug = debug) Logs.send("Debug mode is now enable.");
 	}
 	
 }

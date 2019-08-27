@@ -1,8 +1,8 @@
 main: ru.sgk.thetowers.MainTowers
 name: TheTowers
 version: 0.0.1-SNAPSHOT
-authors: [SteveGrKek, iBuseWinner]
+author: SteveGrKe
 commands:
   towers:
     usage: ''
-  aliases: []
+    aliases: []

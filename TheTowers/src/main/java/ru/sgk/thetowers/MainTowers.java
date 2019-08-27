@@ -3,6 +3,7 @@ package ru.sgk.thetowers;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.utils.Logs;
 
 /**
@@ -12,11 +13,22 @@ import ru.sgk.thetowers.utils.Logs;
 public class MainTowers extends JavaPlugin
 {
 	private static MainTowers instance;
+	
 	public void onEnable()
 	{
 		instance = this;
-		Logs.setLoggger(getLogger());
-		Logs.sendDebugMessage("Enabling plugin...");
+
+		Logs.send("Enabling plugin...");
+		Logs.send("Loading configuration");
+		Configurations.loadConfig();
+		Logs.send("§aConfig loaded");
+		
+		Logs.send("Loading messages");
+		Configurations.loadMessages(Configurations.getConfig().getString("lang"));
+		Logs.send("§aMessages loaded");
+		
+		
+		Logs.init();
 		Logs.send("§aPlugin has enabled.");
 	}
 	
@@ -26,17 +38,30 @@ public class MainTowers extends JavaPlugin
 		Logs.send("§aPlugin has disabled.");
 	}
 	
+	/**
+	 * Using for getting some non-static fields
+	 * @return
+	 */
 	public static MainTowers getInstance() {
 		return instance;
 	}
-	@Override
-	public FileConfiguration getConfig()
-	{
-		return null;
-	}
 	
+	/**
+	 * Method not using. Use Configuration class for getConfig() instead 
+	 * @return null!
+	 */
+	@Override
+	public FileConfiguration getConfig() {return null;}
+	
+	/**
+	 * Method not using. Use Configuration class for saveConfig() instead
+	 */
 	@Override
 	public void saveConfig() {}
+	
+	/**
+	 * Method not using. Use Configuration class for reloadConfig() instead
+	 */
 	@Override
 	public void reloadConfig() {}
 }

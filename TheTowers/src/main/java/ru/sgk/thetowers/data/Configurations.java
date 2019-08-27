@@ -11,9 +11,13 @@ public class Configurations {
 		config = Configuration.loadConfig("config.yml");
 	}
 
+	/**
+	 * @throws NullPointerException
+	 * @return
+	 */
 	public static FileConfiguration getConfig()
 	{
-		if (config == null) loadConfig(); 
+		if (config == null) throw new NullPointerException("Configuration file is null"); 
 		return config;
 	}
 	
@@ -29,7 +33,7 @@ public class Configurations {
 	
 	public static FileConfiguration getMessages()
 	{
-		if (messages == null) loadMessages(config.getString("locale"));
+		if (messages == null) throw new NullPointerException("Message file is null"); 
 		return messages;
 	}
 	
