@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-abstract class AbstractTower 
+public abstract class AbstractTower 
 {
 	private String title;
 	private List<String> description;

@@ -29,6 +29,10 @@ public class MainTowers extends JavaPlugin
 		Configurations.loadMessages(Configurations.getConfig().getString("lang"));
 		Logs.send("§aMessages loaded");
 		
+		Logs.send("Loading settings");
+		Configurations.loadSettings();
+		Logs.send("§aSettingsloaded");
+		
 		Logs.send("§aPlugin has enabled.");
 	}
 	
