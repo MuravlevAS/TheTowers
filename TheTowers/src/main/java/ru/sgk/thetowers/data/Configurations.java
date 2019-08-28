@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class Configurations {
 	private static FileConfiguration config = null;
 	private static FileConfiguration messages = null;
+	private static FileConfiguration settings = null;
 	
 	public static void loadConfig()
 	{
@@ -12,7 +13,7 @@ public class Configurations {
 	}
 
 	/**
-	 * @throws NullPointerException
+	 * @throws NullPointerException if config was not loaded before
 	 * @return
 	 */
 	public static FileConfiguration getConfig()
@@ -25,12 +26,19 @@ public class Configurations {
 	{
 		loadConfig();
 	}
-	
+
+	/**
+	 * @throws NullPointerException if config was not loaded before
+	 */
 	public static void saveConfig()
 	{
+		if (config == null) throw new NullPointerException();
 		Configuration.saveConfiguration(config, "config.yml");
 	}
-	
+
+	/**
+	 * @throws NullPointerException if messages was not loaded before
+	 */
 	public static FileConfiguration getMessages()
 	{
 		if (messages == null) throw new NullPointerException("Message file is null"); 
@@ -46,9 +54,41 @@ public class Configurations {
 	{
 		loadMessages(lang);
 	}
-	
+
+	/**
+	 * @throws NullPointerException if messages was not loaded before
+	 */
 	public static void saveMessages(String lang)
 	{
+		if (messages == null) throw new NullPointerException();
 		Configuration.saveConfiguration(messages, "messages_"+lang+".yml");
+	}
+	
+	public static void loadSettings()
+	{
+		settings = Configuration.loadConfig("settings.yml");
+	}
+	
+	public static void relaodSettings()
+	{
+		loadSettings();
+	}
+
+	/**
+	 * @throws NullPointerException if settings was not loaded before
+	 */
+	public static FileConfiguration getSettings()
+	{
+		if (settings == null) throw new NullPointerException();
+		return settings;
+	}
+
+	/**
+	 * @throws NullPointerException if settings was not loaded before
+	 */
+	public static void saveSettings()
+	{
+		if (settings == null) throw new NullPointerException();
+		Configuration.saveConfiguration(settings, "settings.yml");
 	}
 }

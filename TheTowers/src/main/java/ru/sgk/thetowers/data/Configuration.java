@@ -15,7 +15,7 @@ import ru.sgk.thetowers.utils.Logs;
 public class Configuration {
 	public static FileConfiguration loadConfig(String filename)
 	{
-		Logs.sendDebugMessage("load" + filename);
+		Logs.sendDebugMessage("load " + filename);
 		
 		File file = new File(MainTowers.getInstance().getDataFolder() + "/"+ filename);
 		FileConfiguration config = null;

@@ -22,18 +22,19 @@ public class MainTowers extends JavaPlugin
 		Logs.send("Loading configuration");
 		Configurations.loadConfig();
 		Logs.send("§aConfig loaded");
+
+		Logs.init();
 		
 		Logs.send("Loading messages");
 		Configurations.loadMessages(Configurations.getConfig().getString("lang"));
 		Logs.send("§aMessages loaded");
 		
-		
-		Logs.init();
 		Logs.send("§aPlugin has enabled.");
 	}
 	
 	public void onDisable()
 	{
+		
 		Logs.sendDebugMessage("Disabling plugin...");
 		Logs.send("§aPlugin has disabled.");
 	}
