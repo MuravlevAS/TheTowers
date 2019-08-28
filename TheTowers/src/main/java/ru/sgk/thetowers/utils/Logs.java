@@ -5,7 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import ru.sgk.thetowers.data.Configurations;
 
 public class Logs {
-	private static boolean debug = true;
+	private static boolean debug = false;
 	
 	public static void init()
 	{
@@ -13,7 +13,7 @@ public class Logs {
 		FileConfiguration config;
 		if ((config = Configurations.getConfig()) != null)
 		{
-			debug = config.getBoolean("debug", false);
+			debug = config.contains("debug") && config.getBoolean("debug");
 		} else debug = false;
 		if (debug) Logs.send("Debug mode is enable.");
 		else   Logs.send("Debug mode is disable.");
