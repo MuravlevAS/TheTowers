@@ -1,2 +1,6 @@
 lang: ru
 debug: true
+scoreboard:
+  title: 'TheTowers'
+  lines: 
+    - 'health: %castle_health%'
