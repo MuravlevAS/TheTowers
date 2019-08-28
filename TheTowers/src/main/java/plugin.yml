@@ -1,7 +1,7 @@
 main: ru.sgk.thetowers.MainTowers
 name: TheTowers
 version: 0.0.1-SNAPSHOT
-author: SteveGrKe
+authors: [SteveGrKeK, iBuseWinner]
 commands:
   towers:
     usage: ''
