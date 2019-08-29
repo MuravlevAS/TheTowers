@@ -1,9 +1,14 @@
 package ru.sgk.thetowers;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ru.sgk.thetowers.data.Configurations;
+import ru.sgk.thetowers.game.data.PlayerData;
+import ru.sgk.thetowers.game.events.MainEvents;
+import ru.sgk.thetowers.scoreboard.Board;
 import ru.sgk.thetowers.utils.Logs;
 
 /**
@@ -31,9 +36,17 @@ public class MainTowers extends JavaPlugin
 		
 		Logs.send("Loading settings");
 		Configurations.loadSettings();
-		Logs.send("§aSettingsloaded");
+		Logs.send("§aSettings loaded");
+		
+		getServer().getPluginManager().registerEvents(new MainEvents(), this);
 		
 		Logs.send("§aPlugin has enabled.");
+		
+		Board.newScoreboard();
+		for (Player p : Bukkit.getOnlinePlayers())
+		{
+			PlayerData.add(p);
+		}
 	}
 	
 	public void onDisable()

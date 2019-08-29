@@ -1,15 +1,13 @@
 package ru.sgk.thetowers.scoreboard;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+
+import com.google.gson.internal.LinkedTreeMap;
 
 import ru.sgk.thetowers.MainTowers;
 import ru.sgk.thetowers.data.Configurations;
@@ -17,54 +15,47 @@ import ru.sgk.thetowers.game.data.PlayerData;
 
 public class Board implements Runnable
 {
-	private static ScoreboardManager sbManager;
-	private static Scoreboard scoreboard = sbManager.getNewScoreboard();
+//	private static ScoreboardManager sbManager = Bukkit.getScoreboardManager();
 	
-	static List<String> lines = Collections.synchronizedList(new ArrayList<String>());
+//	private static SimpleScoreboard board;
 	
-	public static void init()
+	static Map<String,Integer> lines = new ConcurrentHashMap<>();
+	public static void newScoreboard()
 	{
 		getConfigList();
+//		board = new SimpleScoreboard(getTitle());
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(MainTowers.getInstance(), new Board(), 0, 1);
 	}
 	
 	private static void getConfigList()
 	{
 		List<String> list = Configurations.getConfig().getStringList("scoreboard.lines");
-		lines = Collections.synchronizedList(new ArrayList<String>());
-		for (int i = 0; i < list.size() && i < 15; i++)
+		lines = Collections.synchronizedMap(new LinkedTreeMap<String, Integer>());
+		int i = 15;
+		for (String s : list)
 		{
-			lines.add(list.get(i));
+			if (i == 0) break;
+			lines.put(s, i--);
 		}
 	}
-	private static String getTitle()
+	public static String getTitle()
 	{
 		return Configurations.getConfig().getString("scoreboard.title");
-	}	
-
+	}
+	private static int i = 0;
 	@Override
 	public void run() 
 	{
-		scoreboard = sbManager.getNewScoreboard();
 		PlayerData.getOnlinePlayers().stream().forEach((PlayerData p) ->
+		//for (PlayerData p : PlayerData.getOnlinePlayers())
 		{
-			
-			Objective obj = null;
-			if (scoreboard.getObjective("TheTowers") != null)
-				obj = scoreboard.getObjective("TheTowers");
-			else
-				obj = scoreboard.registerNewObjective("TheTowers", "dummy", getTitle());
-			obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-			
-			byte i = 15;
-			for (String s : lines)
+			lines.forEach((s, i) -> 
 			{
-				Score score = obj.getScore(s.replaceAll("%castle_health%", p.getCastleHealth()+""));
-				score.setScore(i--);
-				
-			}
-			
-			p.getPlayer().setScoreboard(scoreboard);
+				p.getBoard().add(s.replaceAll("%castle_health%", p.getCastleHealth()+""), i);
+			});
+			p.getBoard().update();
+			p.getBoard().send(p.getPlayer());
 		});
+		if (Board.i++ > 100) Board.i = 0;
 	}
 }

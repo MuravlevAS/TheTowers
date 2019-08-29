@@ -13,7 +13,7 @@ import ru.sgk.thetowers.MainTowers;
 import ru.sgk.thetowers.utils.Logs;
 
 public class Configuration {
-	public static FileConfiguration loadConfig(String filename)
+	public synchronized static FileConfiguration loadConfig(String filename)
 	{
 		Logs.sendDebugMessage("load " + filename);
 		
@@ -40,7 +40,7 @@ public class Configuration {
 		}
 		return config;
 	}
-	public static void saveConfiguration(FileConfiguration config, String filename)
+	public synchronized static void saveConfiguration(FileConfiguration config, String filename)
 	{
 		File file = new File(MainTowers.getInstance().getDataFolder() + "/"+ filename);
 		try {
