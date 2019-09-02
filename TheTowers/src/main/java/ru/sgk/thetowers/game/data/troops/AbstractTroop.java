@@ -1,7 +1,11 @@
 package ru.sgk.thetowers.game.data.troops;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+
+import java.util.List;
 
 public abstract class AbstractTroop 
 {
@@ -13,12 +17,20 @@ public abstract class AbstractTroop
 	private double health;
 	private double killed;
 	private EntityType mobType;
+	private Location spawnLocation;
+	private Location endLocation;
+	private List<Location> wayPoints;
+	private Entity entityTemplate;
 	
 	public AbstractTroop()
 	{
 		
 	}
-	
+
+	public void spawn(Location loc) throws NullPointerException
+	{
+		loc.getWorld().spawnEntity(loc, mobType);
+	}
 	
 	public String getTitle() 
 	{
@@ -89,6 +101,14 @@ public abstract class AbstractTroop
 	{
 		this.mobType = mobType;
 	}
-	
-	 
+
+	public Entity getEntityTemplate()
+	{
+		return entityTemplate;
+	}
+
+	public void setEntityTemplate(Entity entityTemplate)
+	{
+		this.entityTemplate = entityTemplate;
+	}
 }
