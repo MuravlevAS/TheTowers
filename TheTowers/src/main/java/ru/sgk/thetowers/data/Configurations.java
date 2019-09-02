@@ -9,7 +9,7 @@ public class Configurations {
 	
 	public static void loadConfig()
 	{
-		config = Configuration.loadConfig("src/config.yml");
+		config = Configuration.loadConfig("config.yml");
 	}
 
 	/**
@@ -33,7 +33,7 @@ public class Configurations {
 	public static void saveConfig()
 	{
 		if (config == null) throw new NullPointerException();
-		Configuration.saveConfiguration(config, "src/config.yml");
+		Configuration.saveConfiguration(config, "config.yml");
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class Configurations {
 	
 	public static void loadSettings()
 	{
-		settings = Configuration.loadConfig("src/settings.yml");
+		settings = Configuration.loadConfig("settings.yml");
 	}
 	
 	public static void relaodSettings()
@@ -89,6 +89,6 @@ public class Configurations {
 	public static void saveSettings()
 	{
 		if (settings == null) throw new NullPointerException();
-		Configuration.saveConfiguration(settings, "src/settings.yml");
+		Configuration.saveConfiguration(settings, "settings.yml");
 	}
 }
