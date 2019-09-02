@@ -1,15 +1,18 @@
 package ru.sgk.thetowers.game.data.towers;
 
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.configuration.ConfigurationSection;
-
-public abstract class AbstractTower 
+public abstract class AbstractTower
 {
 	private String title;
 	private List<String> description;
 	private TowerLevel currentLevel;
+	private Location location;
 	private double cost;
 	/**
 	 * Значение в мс
@@ -19,9 +22,25 @@ public abstract class AbstractTower
 	private double radius;
 	private double damage;
 	protected ConfigurationSection configSection;
-	
+	private EntityType mobType;
+
+
+//	public AbstractTower(ConfigurationSection configSection, String title, List<String> description, Location location, double cost, long rechargeTime, TowerLevel maxLevel, double radius, double damage, EntityType mobType) {
+//		this.configSection = configSection;
+//		this.title = title;
+//		this.description = description;
+//		this.location = location;
+//		this.cost = cost;
+//		this.rechargeTime = rechargeTime;
+//		this.maxLevel = maxLevel;
+//		this.radius = radius;
+//		this.damage = damage;
+//		this.mobType = mobType;
+//	}
+
+
 	public abstract void setSettings();
-	
+
 	public void upgrade()
 	{
 		if (currentLevel == maxLevel) return;
@@ -57,7 +76,7 @@ public abstract class AbstractTower
 		return description;
 	}
 
-	public void setDescription(List<String> description) 
+	public void setDescription(List<String> description)
 	{
 		this.description = description;
 	}
@@ -137,6 +156,14 @@ public abstract class AbstractTower
 		}
 		return newList;
 	}
-	
-	
+
+
+	public EntityType getMobType()
+	{
+		return mobType;
+	}
+
+	public void setMobType(EntityType mobType) {
+		this.mobType = mobType;
+	}
 }

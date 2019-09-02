@@ -1,12 +1,11 @@
 package ru.sgk.thetowers.game.data.towers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.common.collect.Iterables;
 import org.bukkit.configuration.ConfigurationSection;
-
 import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.utils.Logs;
+
+import java.util.ArrayList;
 
 public class TowerFreezer extends AbstractTower
 {
@@ -30,8 +29,7 @@ public class TowerFreezer extends AbstractTower
 		setTitle		(getString("title"));
 		setDescription	(getStringList("desc"));
 		setLevel(TowerLevel.A);
-		List<String> levels = new ArrayList<>(configSection.getConfigurationSection("levels").getKeys(false));
-		setMaxLevel		(TowerLevel.valueOf(levels.get(levels.size()-1)));
+		setMaxLevel		(TowerLevel.valueOf(Iterables.getLast(new ArrayList<>(configSection.getConfigurationSection("levels").getKeys(false)))));
 		setDamage		(0);
 		freezeTime = 	(configSection.getLong("levels.A.time"));
 		setCost			(configSection.getDouble("levels.A.cost"));
