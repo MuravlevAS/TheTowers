@@ -1,10 +1,9 @@
 package ru.sgk.thetowers.game;
 
+import ru.sgk.thetowers.utils.GameScheduler;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import ru.sgk.thetowers.utils.GameScheduler;
 
 public class GameProcess {
 	
@@ -19,7 +18,7 @@ public class GameProcess {
 	
 	public void start()
 	{
-		threadId = GameScheduler.ScheduleTask(()->repeat(), 0);
+		threadId = GameScheduler.scheduleTask(this::repeat, 0);
 		counter = 0;
 		seconds = 0;
 	}

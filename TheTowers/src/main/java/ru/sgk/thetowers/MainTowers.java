@@ -21,6 +21,7 @@ public class MainTowers extends JavaPlugin
 	
 	public void onEnable()
 	{
+
 		instance = this;
 
 		Logs.send("Enabling plugin...");
@@ -42,7 +43,7 @@ public class MainTowers extends JavaPlugin
 		
 		Logs.send("§aPlugin has enabled.");
 		
-		Board.newScoreboard();
+		Board.initScoreboard();
 		for (Player p : Bukkit.getOnlinePlayers())
 		{
 			PlayerData.add(p);

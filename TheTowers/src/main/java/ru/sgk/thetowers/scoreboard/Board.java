@@ -1,32 +1,30 @@
 package ru.sgk.thetowers.scoreboard;
 
+import com.google.gson.internal.LinkedTreeMap;
+import org.bukkit.Bukkit;
+import ru.sgk.thetowers.MainTowers;
+import ru.sgk.thetowers.data.Configurations;
+import ru.sgk.thetowers.game.data.PlayerData;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.Bukkit;
-
-import com.google.gson.internal.LinkedTreeMap;
-
-import ru.sgk.thetowers.MainTowers;
-import ru.sgk.thetowers.data.Configurations;
-import ru.sgk.thetowers.game.data.PlayerData;
-
 public class Board implements Runnable
 {
 //	private static ScoreboardManager sbManager = Bukkit.getScoreboardManager();
-	
+
 //	private static SimpleScoreboard board;
-	
+
 	static Map<String,Integer> lines = new ConcurrentHashMap<>();
-	public static void newScoreboard()
+	public static void initScoreboard()
 	{
 		getConfigList();
 //		board = new SimpleScoreboard(getTitle());
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(MainTowers.getInstance(), new Board(), 0, 1);
 	}
-	
+
 	private static void getConfigList()
 	{
 		List<String> list = Configurations.getConfig().getStringList("scoreboard.lines");
