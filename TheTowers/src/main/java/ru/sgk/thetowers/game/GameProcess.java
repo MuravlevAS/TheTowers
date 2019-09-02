@@ -11,23 +11,27 @@ public class GameProcess {
 	private int threadId;
 	private int counter;
 	private int seconds;
+	private int tmpTimer;
+
+
 	public GameProcess()
 	{
 		scheduler = Executors.newSingleThreadScheduledExecutor();
 	}
-	
+
 	public void start()
 	{
-		threadId = GameScheduler.scheduleTask(this::repeat, 0);
+		tmpTimer = 0;
 		counter = 0;
 		seconds = 0;
+		threadId = GameScheduler.scheduleTask(this::repeat, 0);
 	}
-	
+
 	public void stop()
 	{
 		GameScheduler.cancel(threadId);
 	}
-	
+
 	/**
 	 * repeating one times per second
 	 */
