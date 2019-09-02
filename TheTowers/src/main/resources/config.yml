@@ -3,4 +3,5 @@ debug: true
 scoreboard:
   title: 'TheTowers'
   lines:
-    - 'health: %castle_health%'
+  - 'health: %castle_health%'
+world-name: 'world'
