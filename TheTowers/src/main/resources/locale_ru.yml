@@ -14,7 +14,7 @@ teams:
   DARK_BLUE: '&1Dark Blue'
   WHITE: '&fWhite'
   GRAY: '&7Gray'
-  
+
 commands:
   towers:
     help:
@@ -33,7 +33,7 @@ commands:
       - "&3/towers arena <Арена> removeTeam <Цвет> &a- Удалить команду с цветом на арене."
       - "&3/towers teamList <Арена> &a- Список команд на арене."
       - "&3/towers arena <Арена> team <Цвет> &a- Выводит список возможных команд."
-      - "&3/towers arena <Арена> team <Цвет> setSpawn [<x> <y> <z>] &a- Установить место спавна игроков команды с цветом."
+      - "&3/towers arena <Арена> team <Цвет> setSpawn &a- Установить место спавна игроков команды с цветом."
       - "&3/towers arena <Арена> team <Цвет> setTroopsSpawn &a- Установить точку спавна мобов."
       - "&3/towers arena <Арена> team <Цвет> addWayPoint &a- Добавить место поворота моба."
       - "&aПродолжение: &3/towers arena 2"
