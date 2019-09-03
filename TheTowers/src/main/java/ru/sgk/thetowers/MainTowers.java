@@ -5,7 +5,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import ru.sgk.thetowers.commands.MainTowersCommand;
 import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.game.data.PlayerData;
 import ru.sgk.thetowers.game.events.MainEvents;
@@ -41,7 +40,6 @@ public class MainTowers extends JavaPlugin
 		Logs.send("§aSettings loaded");
 		
 		getServer().getPluginManager().registerEvents(new MainEvents(), this);
-		getServer().getPluginCommand("towers").setExecutor(new MainTowersCommand());
 		
 		Logs.send("§aPlugin has enabled.");
 		

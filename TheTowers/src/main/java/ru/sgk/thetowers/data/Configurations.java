@@ -12,14 +12,14 @@ public class Configurations {
 	private static FileConfiguration settings = null;
 
 	public static String getLocaleString(String path){
-		return ChatColor.translateAlternateColorCodes('&', getLocale().getString(path)).replaceAll("%prefix%", getLocale().getString("prefix").replaceAll("&", "§"));
+		return ChatColor.translateAlternateColorCodes('&', getLocale().getString(path));
 	}
 	public static List<String> getLocaleStringList(String path){
 		List<String> l1 = new ArrayList<>();
 		List<String> l2 = getLocale().getStringList(path);
 		for (String s : l2)
 		{
-			l1.add(s.replaceAll("&", "§").replaceAll("%prefix%", getLocale().getString("prefix").replaceAll("&", "§")));
+			l1.add(s.replace('&', '§'));
 		}
 		return l1;
 	}
