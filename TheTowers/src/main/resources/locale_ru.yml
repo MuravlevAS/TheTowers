@@ -1,3 +1,6 @@
+prefix: "&8[&7&lTheTowers&8]&3"
+console: "%prefix% &cКоманду можно использовать только игрокам!"
+
 teams:
   RED: '&cRed'
   BLUE: '&9Blue'
@@ -10,7 +13,6 @@ teams:
   DARK_GREEN: '&2Dark Green'
   DARK_BLUE: '&1Dark Blue'
   WHITE: '&fWhite'
-<<<<<<< HEAD
   GRAY: '&7Gray'
 
 commands:
@@ -42,6 +44,3 @@ commands:
       - "&3/towers arena <Арена> team <Цвет> setTroopsEnd &a - Указать зону конца пути мобов."
       - "&3/towers arena <Арена> team <Цвет> placingMode &a - Перейти в режим установки блоков для башен."
       - "&3/towers placingModeOff &a- Выйти из режима установки блоков для башен."
-=======
-  GRAY: '&7Gray'
->>>>>>> parent of 8b3c4ac... Merge branch 'master' of https://github.com/MuravlevAS/TheTowers
