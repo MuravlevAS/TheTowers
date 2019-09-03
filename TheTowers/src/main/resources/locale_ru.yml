@@ -1,0 +1,13 @@
+teams:
+  RED: '&cRed'
+  BLUE: '&9Blue'
+  GREEN: '&aGreen'
+  YELLOW: '&eYellow'
+  PURPLE: '&dPurple'
+  AQUA: '&bAqua'
+  GOLD: '&6Gold'
+  DARK_PURPLE: '&5Dark Purple'
+  DARK_GREEN: '&2Dark Green'
+  DARK_BLUE: '&1Dark Blue'
+  WHITE: '&fWhite'
+  GRAY: '&7Gray'
