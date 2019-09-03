@@ -1,12 +1,28 @@
 package ru.sgk.thetowers.data;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Configurations {
 	private static FileConfiguration config = null;
 	private static FileConfiguration messages = null;
 	private static FileConfiguration settings = null;
-	
+
+	public static String getLocaleString(String path){
+		return ChatColor.translateAlternateColorCodes('&', getLocale().getString(path));
+	}
+	public static List<String> getLocaleStringList(String path){
+		List<String> l1 = new ArrayList<>();
+		List<String> l2 = getLocale().getStringList(path);
+		for (String s : l2)
+		{
+			l1.add(s.replace('&', '§'));
+		}
+		return l1;
+	}
 	public static void loadConfig()
 	{
 		config = Configuration.loadConfig("config.yml");
@@ -21,7 +37,7 @@ public class Configurations {
 		if (config == null) throw new NullPointerException("Configuration file is null"); 
 		return config;
 	}
-	
+
 	public static void relaodConfig()
 	{
 		loadConfig();
@@ -39,26 +55,26 @@ public class Configurations {
 	/**
 	 * @throws NullPointerException if messages was not loaded before
 	 */
-	public static FileConfiguration getMessages()
+	public static FileConfiguration getLocale()
 	{
 		if (messages == null) throw new NullPointerException("Message file is null"); 
 		return messages;
 	}
 	
-	public static void loadMessages(String lang)
+	public static void loadLocale(String lang)
 	{
 		messages = Configuration.loadConfig("messages_"+lang+".yml");
 	}
 	
-	public static void reloadMessages(String lang)
+	public static void reloadLocale(String lang)
 	{
-		loadMessages(lang);
+		loadLocale(lang);
 	}
 
 	/**
 	 * @throws NullPointerException if messages was not loaded before
 	 */
-	public static void saveMessages(String lang)
+	public static void saveLocale(String lang)
 	{
 		if (messages == null) throw new NullPointerException();
 		Configuration.saveConfiguration(messages, "messages_"+lang+".yml");
