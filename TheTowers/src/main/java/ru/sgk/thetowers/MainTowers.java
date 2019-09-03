@@ -32,7 +32,7 @@ public class MainTowers extends JavaPlugin
 		Logs.init();
 		
 		Logs.send("Loading messages");
-		Configurations.loadMessages(Configurations.getConfig().getString("lang"));
+		Configurations.loadLocale(Configurations.getConfig().getString("lang"));
 		Logs.send("§aMessages loaded");
 		
 		Logs.send("Loading settings");
