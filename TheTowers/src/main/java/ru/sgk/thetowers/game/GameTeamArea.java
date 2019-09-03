@@ -10,12 +10,14 @@ public class GameTeamArea
     public GameTeamArea(Location min, Location max) {
         this.min = min;
         this.max = max;
+        flipLocations();
     }
 
     public GameTeamArea(Location min, Location max, Location spawnLoc) {
         this.min = min;
         this.max = max;
-        this.spawnLoc = spawnLoc;
+        flipLocations();
+        setSpawnLoc(spawnLoc);
     }
 
     public Location getMin() {
@@ -39,6 +41,20 @@ public class GameTeamArea
     }
 
     public void setSpawnLoc(Location spawnLoc) {
+        if (    spawnLoc.getBlockX() >= min.getBlockX() &&
+                spawnLoc.getBlockY() >= min.getBlockY() &&
+                spawnLoc.getBlockZ() >= min.getBlockZ() &&
+                spawnLoc.getBlockX() <= max.getBlockX() &&
+                spawnLoc.getBlockY() <= max.getBlockY()-1 &&
+                spawnLoc.getBlockZ() <= max.getBlockZ())
         this.spawnLoc = spawnLoc;
+    }
+
+    private void flipLocations() {
+        if (min.getY() > max.getY()) {
+            Location tmp = min;
+            min = max;
+            max = tmp;
+        }
     }
 }

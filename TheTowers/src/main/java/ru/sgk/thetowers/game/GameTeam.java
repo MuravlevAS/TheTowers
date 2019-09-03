@@ -14,7 +14,8 @@ public class GameTeam
     private List<AbstractTower> placedTowers;
     private Location troopSpawn;
     private List<Location> troopWay;
-    private Location troopEnd;
+    private Location troopsEndMin;
+    private Location troopsEndMax;
     private GameTeamArea teamArea;
     private List<Player> players;
 
@@ -57,11 +58,6 @@ public class GameTeam
         return troopWay;
     }
 
-    public Location getTroopEnd()
-    {
-        return troopEnd;
-    }
-
     public void addCoins(int coins) {
         this.coins += coins;
     }
@@ -70,16 +66,22 @@ public class GameTeam
         this.troopSpawn = troopSpawn;
     }
 
-    public void setTroopEnd(Location troopEnd) {
-        this.troopEnd = troopEnd;
-    }
-
-    public void addPlaeyr(Player player) {
+    public void addPlayer(Player player) {
         if (!players.contains(player)) players.add(player);
     }
 
     public void removePlayer(Player player){
         players.remove(player);
+    }
+
+    public boolean isInTroopEnd(Location loc)
+    {
+        return (loc.getBlockX() >= troopsEndMin.getBlockX() &&
+                loc.getBlockY() >= troopsEndMin.getBlockY() &&
+                loc.getBlockZ() >= troopsEndMin.getBlockZ() &&
+                loc.getBlockX() <= troopsEndMax.getBlockX() &&
+                loc.getBlockY() <= troopsEndMax.getBlockY()-1 &&
+                loc.getBlockZ() <= troopsEndMax.getBlockZ());
     }
 
 
