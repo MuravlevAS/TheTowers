@@ -2,7 +2,9 @@ package ru.sgk.thetowers.game;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.game.data.towers.AbstractTower;
+import ru.sgk.thetowers.game.data.troops.AbstractTroop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +20,11 @@ public class GameTeam
     private Location troopsEndMax;
     private GameTeamArea teamArea;
     private List<Player> players;
+    private List<AbstractTroop> spawnedTroops;
 
     public GameTeam(GameTeamColor color) {
         this.color = color;
-
+        spawnedTroops = new ArrayList<>();
         this.coins = 0;
         this.placedTowers = new ArrayList<>();
         this.troopWay = new ArrayList<>();
@@ -32,6 +35,30 @@ public class GameTeam
         this(color);
         this.teamArea = area;
     }
+
+    public void setArea(GameTeamArea area)
+    {
+        this.teamArea = area;
+    }
+
+    public void spawnTroop(AbstractTroop troop)
+    {
+        troop.spawn(troopSpawn);
+        spawnedTroops.add(troop);
+    }
+
+    public void sendTroops(Player sender, GameTeam teamToSend, AbstractTroop... troops)
+    {
+        for (AbstractTroop t : troops)
+        {
+            if (coins > t.getCost()){
+                teamToSend.spawnTroop(t);
+                sender.sendMessage(Configurations.getLocaleString("troop-sended").replaceAll("%team%", teamToSend.toString()));
+            }
+
+        }
+    }
+
 
     public GameTeamColor getColor()
     {
@@ -53,8 +80,7 @@ public class GameTeam
         return troopSpawn;
     }
 
-    public List<Location> getTroopWay()
-    {
+    public List<Location> getTroopWay(){
         return troopWay;
     }
 
@@ -93,5 +119,10 @@ public class GameTeam
         GameTeam team = (GameTeam) obj;
 
         return team.color.equals(color);
+    }
+
+    @Override
+    public String toString() {
+        return Configurations.getLocaleString("teams."+color.toString());
     }
 }

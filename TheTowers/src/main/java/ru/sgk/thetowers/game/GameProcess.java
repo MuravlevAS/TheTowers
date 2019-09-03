@@ -2,21 +2,21 @@ package ru.sgk.thetowers.game;
 
 import ru.sgk.thetowers.utils.GameScheduler;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
 public class GameProcess {
-	
-	private ScheduledExecutorService scheduler;
+
 	private int threadId;
-	private int counter;
+	private long counter;
+	private long globalCounter;
 	private int seconds;
-	private int tmpTimer;
-
-
-	public GameProcess()
+	private int minutes;
+	private long tmpTimer;
+	private GameArena arena;
+	private boolean started;
+	private int startedTime;
+	public GameProcess(String arena)
 	{
-		scheduler = Executors.newSingleThreadScheduledExecutor();
+		this.arena = GameArenas.getArena(arena);
+		this.startedTime = 10_000;
 	}
 
 	public void start()
@@ -24,6 +24,7 @@ public class GameProcess {
 		tmpTimer = 0;
 		counter = 0;
 		seconds = 0;
+		started = false;
 		threadId = GameScheduler.scheduleTask(this::repeat, 0);
 	}
 
@@ -33,7 +34,7 @@ public class GameProcess {
 	}
 
 	/**
-	 * repeating one times per second
+	 * repeated once per second
 	 */
 	private void repeat()
 	{
@@ -42,5 +43,21 @@ public class GameProcess {
 			seconds++;
 			counter = 0;
 		}
+		if (!started)
+		{
+			if (globalCounter >= startedTime) started = true;
+		}
+		else
+		{
+			// TODO: game process;
+
+		}
+		globalCounter++;
+		counter++;
 	}
+
+	public long getGlobalCounter(){
+		return this.globalCounter;
+	}
+
 }

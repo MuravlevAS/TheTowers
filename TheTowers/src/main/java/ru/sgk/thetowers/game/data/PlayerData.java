@@ -1,13 +1,12 @@
 package ru.sgk.thetowers.game.data;
 
+import org.bukkit.entity.Player;
+import ru.sgk.thetowers.scoreboard.Board;
+import ru.sgk.thetowers.scoreboard.SimpleScoreboard;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.bukkit.entity.Player;
-
-import ru.sgk.thetowers.scoreboard.Board;
-import ru.sgk.thetowers.scoreboard.SimpleScoreboard;
 
 public class PlayerData 
 {
