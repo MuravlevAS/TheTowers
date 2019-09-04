@@ -103,9 +103,9 @@ public class SimpleScoreboard {
         result = cache.get(color.toString());
 
         try {
-            team = scoreboard.registerNewTeam("text-" + (teams.size() + 1));
+            team = scoreboard.registerNewTeam("TowersBoard-" + (teams.size() + 1));
         } catch (IllegalArgumentException e) {
-            team = scoreboard.getTeam("text-" + (teams.size()));
+            team = scoreboard.getTeam("TowersBoard-" + (teams.size()));
         }
 
         applyText(team, text, result);
@@ -177,7 +177,7 @@ public class SimpleScoreboard {
         int index = scores.size();
 
         for (Map.Entry<String, Integer> text : scores.entrySet()) {
-            Team t = scoreboard.getTeam(ChatColor.values()[text.getValue()].toString());
+            Team t = scoreboard.getTeam("TowersBoard-" + ChatColor.values()[text.getValue()].toString());
             Map.Entry<Team, OfflinePlayer> team;
 
             if(!updated.contains(text.getKey())) {
