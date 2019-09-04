@@ -17,13 +17,16 @@ public enum GameTeamColor
 
     WHITE,          // &f
     GRAY;           // &7
-    public static String[] stringValues()
-    {
-        String[] strings = new String[values().length];
+    private static String[] stringValues;
+    static {
+
+        stringValues = new String[values().length];
         GameTeamColor[] values = values();
-        for (int i = 0; i < strings.length; i++) {
-            strings[i] = values[i].toString();
+        for (int i = 0; i < stringValues.length; i++) {
+            stringValues[i] = values[i].toString();
         }
-        return strings;
+    }
+    public static String[] stringValues(){
+        return stringValues;
     }
 }
