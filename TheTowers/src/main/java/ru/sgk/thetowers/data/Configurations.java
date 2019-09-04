@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Configurations {
 	private static FileConfiguration config = null;
-	private static FileConfiguration messages = null;
+	private static FileConfiguration locale = null;
 	private static FileConfiguration settings = null;
 
 	public static String getLocaleString(String path){
@@ -57,13 +57,13 @@ public class Configurations {
 	 */
 	public static FileConfiguration getLocale()
 	{
-		if (messages == null) throw new NullPointerException("Message file is null"); 
-		return messages;
+		if (locale == null) throw new NullPointerException("Locale file is null");
+		return locale;
 	}
 	
 	public static void loadLocale(String lang)
 	{
-		messages = Configuration.loadConfig("messages_"+lang+".yml");
+		locale = Configuration.loadConfig("locale_"+lang+".yml");
 	}
 	
 	public static void reloadLocale(String lang)
@@ -76,8 +76,8 @@ public class Configurations {
 	 */
 	public static void saveLocale(String lang)
 	{
-		if (messages == null) throw new NullPointerException();
-		Configuration.saveConfiguration(messages, "messages_"+lang+".yml");
+		if (locale == null) throw new NullPointerException();
+		Configuration.saveConfiguration(locale, "locale_"+lang+".yml");
 	}
 	
 	public static void loadSettings()
