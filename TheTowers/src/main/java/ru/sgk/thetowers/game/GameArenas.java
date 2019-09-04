@@ -1,4 +1,4 @@
-package ru.sgk.thetowers.game.data.arenas;
+package ru.sgk.thetowers.game;
 
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
