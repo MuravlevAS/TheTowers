@@ -38,6 +38,10 @@ public class GameArena
         }
     }
 
+    public List<GameTeam> getTeams() {
+        return teams;
+    }
+
     public Location getLobbyLocation() {
         return lobbyLocation;
     }

@@ -1,6 +1,7 @@
 package ru.sgk.thetowers.game;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.game.data.towers.AbstractTower;
@@ -16,11 +17,11 @@ public class GameTeam
     private List<AbstractTower> placedTowers;
     private Location troopSpawn;
     private List<Location> troopWay;
-    private Location troopsEndMin;
-    private Location troopsEndMax;
+    private Location troopsEnd;
     private GameTeamArea teamArea;
     private List<Player> players;
     private List<AbstractTroop> spawnedTroops;
+    private List<Block> towerBlocks;
 
     public GameTeam(GameTeamColor color) {
         this.color = color;
@@ -59,6 +60,26 @@ public class GameTeam
         }
     }
 
+    public void setTroopsEnd(Location troopsEnd) {
+        this.troopsEnd = troopsEnd;
+    }
+
+    public Location getTroopsEnd() {
+        return troopsEnd;
+    }
+
+
+    public GameTeamArea getArea() {
+        return teamArea;
+    }
+
+    public List<Block> getTowerBlocks() {
+        return towerBlocks;
+    }
+
+    public void setTowerBlocks(List<Block> towerBlocks) {
+        this.towerBlocks = towerBlocks;
+    }
 
     public GameTeamColor getColor()
     {
@@ -68,6 +89,10 @@ public class GameTeam
     public int getCoins()
     {
         return coins;
+    }
+
+    public void setTroopWay(List<Location> troopWay) {
+        this.troopWay = troopWay;
     }
 
     public List<AbstractTower> getPlacedTowers()
@@ -102,12 +127,9 @@ public class GameTeam
 
     public boolean isInTroopEnd(Location loc)
     {
-        return (loc.getBlockX() >= troopsEndMin.getBlockX() &&
-                loc.getBlockY() >= troopsEndMin.getBlockY() &&
-                loc.getBlockZ() >= troopsEndMin.getBlockZ() &&
-                loc.getBlockX() <= troopsEndMax.getBlockX() &&
-                loc.getBlockY() <= troopsEndMax.getBlockY()-1 &&
-                loc.getBlockZ() <= troopsEndMax.getBlockZ());
+        return (loc.getBlockX() == troopsEnd.getBlockX() &&
+                loc.getBlockY() == troopsEnd.getBlockY() &&
+                loc.getBlockZ() == troopsEnd.getBlockZ() );
     }
 
 

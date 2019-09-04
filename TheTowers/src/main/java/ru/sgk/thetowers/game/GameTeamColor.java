@@ -1,5 +1,7 @@
 package ru.sgk.thetowers.game;
 
+import com.sun.istack.internal.NotNull;
+
 public enum GameTeamColor
 {
     RED,            // &c
@@ -16,5 +18,14 @@ public enum GameTeamColor
     DARK_BLUE,      // &1
 
     WHITE,          // &f
-    GRAY,           // &7
+    GRAY;           // &7
+    public static String[] stringValues()
+    {
+        String[] strings = new String[values().length];
+        GameTeamColor[] values = values();
+        for (int i = 0; i < strings.length; i++) {
+            strings[i] = values[i].toString();
+        }
+        return strings;
+    }
 }
