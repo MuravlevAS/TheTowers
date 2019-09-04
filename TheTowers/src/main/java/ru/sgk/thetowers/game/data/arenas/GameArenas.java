@@ -1,17 +1,16 @@
-package ru.sgk.thetowers.game;
+package ru.sgk.thetowers.game.data.arenas;
 
 import com.google.common.collect.Lists;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import ru.sgk.thetowers.data.Configuration;
-import ru.sgk.thetowers.data.Configurations;
+import ru.sgk.thetowers.game.data.teams.GameTeam;
+import ru.sgk.thetowers.game.data.teams.GameTeamArea;
+import ru.sgk.thetowers.game.data.teams.GameTeamColor;
 import ru.sgk.thetowers.utils.Logs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -128,37 +127,7 @@ public class GameArenas
              arenasConfig = Configuration.loadConfig("arenas.yml");
         for (GameArena arena : GameArenas.arenas)
         {
-            String arenaName = arena.getArenaName();
-            int teamSize = arena.getTeamSize();
-            Location lobbyLocation = arena.getLobbyLocation();
-
-            if (teamSize == 0) teamSize = 1;
-            arenasConfig.set("arenas." + arenaName + ".team-size", teamSize);
-            if (lobbyLocation != null)
-                arenasConfig.set("arenas." + arenaName + ".lobby-location", lobbyLocation);
-            for (GameTeam team : arena.getTeams())
-            {
-                String teamColor = team.getColor().toString();
-                Location troopsSpawn = team.getTroopSpawn();
-                Location troopsEnd = team.getTroopsEnd();
-                List<Location> troopsWay = team.getTroopWay();
-                List<Block> towerBlocks = team.getTowerBlocks();
-                GameTeamArea area = team.getArea();
-                Location min = area.getMin();
-                Location max = area.getMax();
-                Location spawn = area.getSpawnLoc();
-
-                arenasConfig.set("arenas." + arenaName + ".teams." + teamColor + ".min", min);
-                arenasConfig.set("arenas." + arenaName + ".teams." + teamColor + ".max", max);
-                arenasConfig.set("arenas." + arenaName + ".teams." + teamColor + ".spawn", spawn);
-                arenasConfig.set("arenas." + arenaName + ".teams." + teamColor + ".troops-spawn", troopsSpawn);
-                arenasConfig.set("arenas." + arenaName + ".teams." + teamColor + ".troops-end", troopsEnd);
-                arenasConfig.set("arenas." + arenaName + ".teams." + teamColor + ".troops-way-points", troopsWay);
-                arenasConfig.set("arenas." + arenaName + ".teams." + teamColor + ".troops-spawn", troopsSpawn);
-                arenasConfig.set("arenas." + arenaName + ".teams." + teamColor + ".tower-blocks", towerBlocks);
-
-
-            }
+            arena.saveToConfig();
         }
         Configuration.saveConfiguration(arenasConfig, "arenas.yml");
     }
@@ -174,5 +143,25 @@ public class GameArenas
         if (addArena(arena))
             return new GameArena(name);
         return getArena(name);
+    }
+    private static void loadConfig(){
+        arenasConfig = Configuration.loadConfig("arenas.yml");
+    }
+
+    public static FileConfiguration getConfig()
+    {
+        if (arenasConfig == null) loadConfig();
+        return arenasConfig;
+    }
+
+    public static void reloadConfig()
+    {
+        loadConfig();
+    }
+
+    public static void saveConfig()
+    {
+        if (arenasConfig != null)
+            Configuration.saveConfiguration(arenasConfig, "arenas.yml");
     }
 }

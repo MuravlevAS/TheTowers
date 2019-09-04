@@ -1,6 +1,4 @@
-package ru.sgk.thetowers.game;
-
-import com.sun.istack.internal.NotNull;
+package ru.sgk.thetowers.game.data.teams;
 
 public enum GameTeamColor
 {

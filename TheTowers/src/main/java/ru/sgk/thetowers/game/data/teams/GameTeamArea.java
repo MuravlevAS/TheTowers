@@ -1,4 +1,4 @@
-package ru.sgk.thetowers.game;
+package ru.sgk.thetowers.game.data.teams;
 
 import org.bukkit.Location;
 
