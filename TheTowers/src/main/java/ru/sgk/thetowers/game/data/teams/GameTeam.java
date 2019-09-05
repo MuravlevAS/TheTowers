@@ -37,6 +37,10 @@ public class GameTeam
         this.teamArea = area;
     }
 
+    public void update() {
+
+    }
+
     public void setArea(GameTeamArea area)
     {
         this.teamArea = area;

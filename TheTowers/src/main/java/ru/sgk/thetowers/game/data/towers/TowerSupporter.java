@@ -38,6 +38,12 @@ public class TowerSupporter extends AbstractTower
 		super.upgrade();
 		Logs.sendDebugMessage("upgrade TowerSupporter to level "+ getLevel());
 	}
+
+	@Override
+	public void update()
+	{
+		// TODO: tower update
+	}
 	
 	@Override
 	public void setSettings() 

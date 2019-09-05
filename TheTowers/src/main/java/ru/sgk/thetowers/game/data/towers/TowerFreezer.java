@@ -54,6 +54,12 @@ public class TowerFreezer extends AbstractTower
 		setRadius		(sect.getDouble("radius"));
 		setRechargeTime (sect.getLong  ("recharge-time"));
 	}
+
+	@Override
+	public void update()
+	{
+		// TODO: tower update
+	}
 	
 	public long getFreezeTime() 
 	{

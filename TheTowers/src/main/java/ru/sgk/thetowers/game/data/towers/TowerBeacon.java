@@ -42,4 +42,10 @@ public class TowerBeacon extends AbstractTower
 		setRechargeTime (sect.getLong  ("time"));
 		setCost			(sect.getDouble("cost"));
 	}
+
+	@Override
+	public void update()
+	{
+		// TODO: tower update
+	}
 }

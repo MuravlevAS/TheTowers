@@ -37,6 +37,12 @@ public class TowerSkeleton extends AbstractTower
 	}
 
 	@Override
+	public void update()
+	{
+		// TODO: tower update
+	}
+
+	@Override
 	public void setSettings() {
 		
 		ConfigurationSection sect = configSection.getConfigurationSection("levels."  + getLevel().toString());

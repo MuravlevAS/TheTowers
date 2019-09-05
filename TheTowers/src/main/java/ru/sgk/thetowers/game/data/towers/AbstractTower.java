@@ -41,6 +41,8 @@ public abstract class AbstractTower
 
 	public abstract void setSettings();
 
+	public abstract void update();
+
 	public void upgrade()
 	{
 		if (currentLevel == maxLevel) return;

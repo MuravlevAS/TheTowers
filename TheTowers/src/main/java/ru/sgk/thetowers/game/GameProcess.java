@@ -1,7 +1,5 @@
 package ru.sgk.thetowers.game;
 
-import ru.sgk.thetowers.game.data.arenas.GameArena;
-import ru.sgk.thetowers.game.data.arenas.GameArenas;
 import ru.sgk.thetowers.utils.GameScheduler;
 
 public class GameProcess {
@@ -27,7 +25,7 @@ public class GameProcess {
 		counter = 0;
 		seconds = 0;
 		started = false;
-		threadId = GameScheduler.scheduleTask(this::repeat, 0);
+		threadId = GameScheduler.scheduleTask(this::update, 0);
 	}
 
 	public void stop()
@@ -38,7 +36,7 @@ public class GameProcess {
 	/**
 	 * repeated once per second
 	 */
-	private void repeat()
+	private void update()
 	{
 		if (counter % 1000 == 0)
 		{
@@ -52,7 +50,6 @@ public class GameProcess {
 		else
 		{
 			// TODO: game process;
-
 		}
 		globalCounter++;
 		counter++;
