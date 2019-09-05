@@ -1,6 +1,7 @@
 package ru.sgk.thetowers.game.data.troops;
 
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -32,11 +33,20 @@ public abstract class AbstractTroop
 
 	public void spawn(Location loc) throws NullPointerException {
 		entity = (LivingEntity) loc.getWorld().spawnEntity(loc, mobType);
+		entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(speed);
+		entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
 	}
 
 	public void despawn(){
 		if (entity != null)
 			entity.remove();
+	}
+
+	public void kill(){
+		if (entity != null){
+			isKilled = true;
+			entity.damage(entity.getHealth());
+		}
 	}
 
 	public void sendDamage(double damage){
