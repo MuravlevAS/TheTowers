@@ -6,7 +6,7 @@ import ru.sgk.thetowers.data.Configurations;
 
 public class TroopPhantom extends AbstractTroop 
 {
-	public TroopPhantom() 
+	public TroopPhantom()
 	{
 		configSection = Configurations.getSettings().getConfigurationSection("troops.phantom");
 		setTitle	(configSection.getString("title"));
@@ -16,5 +16,6 @@ public class TroopPhantom extends AbstractTroop
 		setKilled	(configSection.getDouble("killed"));
 		setSpeed	(configSection.getDouble("speed"));
 		setMobType	(EntityType.PHANTOM);
+		setInvisible(true);
 	}
 }

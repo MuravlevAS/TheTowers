@@ -16,5 +16,6 @@ public class TroopSlime extends AbstractTroop
 		setKilled	(configSection.getDouble("killed"));
 		setSpeed	(configSection.getDouble("speed"));
 		setMobType	(EntityType.SLIME);
+		setInvisible(true);
 	}
 }

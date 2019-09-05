@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 
 import java.util.List;
 
@@ -16,23 +17,66 @@ public abstract class AbstractTroop
 	private double cost;
 	private double health;
 	private double killed;
+	private LivingEntity entity;
 	private EntityType mobType;
 	private Location spawnLocation;
 	private Location endLocation;
 	private List<Location> wayPoints;
 	private Entity entityTemplate;
-	
-	public AbstractTroop()
-	{
+	private boolean isKilled;
+	private boolean invisible = false;
+
+	public AbstractTroop() {
 		
 	}
 
-	public void spawn(Location loc) throws NullPointerException
-	{
-		loc.getWorld().spawnEntity(loc, mobType);
+	public void spawn(Location loc) throws NullPointerException {
+		entity = (LivingEntity) loc.getWorld().spawnEntity(loc, mobType);
 	}
-	
-	public String getTitle() 
+
+	public void despawn(){
+		if (entity != null)
+			entity.remove();
+	}
+
+	public void sendDamage(double damage){
+		if (entity != null){
+			if (damage >= entity.getHealth())
+				isKilled = true;
+			entity.damage(damage);
+		}
+	}
+
+	public void update(){
+		// TODO: update troops
+	}
+
+	public boolean isKilled() {
+		return isKilled;
+	}
+//
+//	public void setKilled(boolean isKilled) {
+//		this.isKilled = isKilled;
+//	}
+
+
+	public boolean isInvisible() {
+		return invisible;
+	}
+
+	public void setInvisible(boolean invisible) {
+		this.invisible = invisible;
+	}
+
+	public Entity getEntity() {
+		return entity;
+	}
+
+	public void setEntity(LivingEntity entity) {
+		this.entity = entity;
+	}
+
+	public String getTitle()
 	{
 		return title;
 	}
