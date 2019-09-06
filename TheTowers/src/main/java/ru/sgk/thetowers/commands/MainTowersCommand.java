@@ -2,6 +2,7 @@ package ru.sgk.thetowers.commands;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -182,9 +183,10 @@ public class MainTowersCommand implements CommandExecutor {
                     }
                     else if(hasPermission(sender, "towers.arena.setlobby"))
                     {
+                        String arena = args[1];
                         if(args[2].equalsIgnoreCase("setlobby"))
                         {
-                            String arena = args[1];
+
                             //ToDo: Метод постановки лобби
                             sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.setlobby"));
                             return false;
@@ -199,30 +201,79 @@ public class MainTowersCommand implements CommandExecutor {
                             {
                                 if(args[2].equalsIgnoreCase("createteam"))
                                 {
-                                    String arena = args[1];
                                     String color = args[3];
                                     //ToDo: Метод создания команды
+                                    sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.create"));
                                     return false;
                                 }
                                 else if(args[2].equalsIgnoreCase("removeteam"))
                                 {
-                                    String arena = args[1];
                                     String color = args[3];
                                     //ToDo: Метод удаления команды
+                                    sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.remove"));
                                     return false;
                                 }
                                 else if(args[2].equalsIgnoreCase("setteamsize"))
                                 {
-                                    String arena = args[1];
                                     Integer size = Integer.parseInt(args[3]);
                                     //ToDo: Метод изменения размера команды
+                                    sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.setsize"));
                                     return false;
                                 }
                                 else
                                 {
                                     if(args[2].equalsIgnoreCase("team"))
                                     {
-                                        
+                                        String color = args[3];
+
+                                        if(args[4].equalsIgnoreCase("setspawn"))
+                                        {
+                                            int x, y, z;
+                                            x = Integer.parseInt(args[5]);
+                                            y = Integer.parseInt(args[6]);
+                                            z = Integer.parseInt(args[7]);
+                                            sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.setspawn"));
+                                            return false;
+                                        }
+                                        else if(args[4].equalsIgnoreCase("settroopsspawn"))
+                                        {
+                                            Location location = ((Player) sender).getLocation();
+                                            //ToDo: Метод установки спавна мобов
+                                            sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.settroopsspawn"));
+                                            return false;
+                                        }
+                                        else if(args[4].equalsIgnoreCase("addwaypoint"))
+                                        {
+                                            Location location = ((Player) sender).getLocation();
+                                            //ToDo: Метод добавления поворота
+                                            sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.addwaypoint"));
+                                            return false;
+                                        }
+                                        else if(args[4].equalsIgnoreCase("removewaypoint"))
+                                        {
+                                            //ToDo: Метод убирания поворота
+                                            sender.sendMessage(Configurations.getLocaleString("commands.tower.arenas.team.removewaypoint"));
+                                            return false;
+                                        }
+                                        else if(args[4].equalsIgnoreCase("settroopsend"))
+                                        {
+                                            //ToDo: Метод установки конца дороги
+                                            sender.sendMessage(Configurations.getLocaleString("commands.tower.arenas.team.settroopsend"));
+                                            return false;
+                                        }
+                                        else if(args[4].equalsIgnoreCase("placingmode"))
+                                        {
+                                            sender.sendMessage(Configurations.getLocaleString("commands.tower.arenas.team.placingmodeon"));
+                                            return false;
+                                        }
+                                        else
+                                        {
+                                            printHelp(sender, "arena");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        printHelp(sender, "arena");
                                     }
                                 }
                             }
@@ -234,6 +285,195 @@ public class MainTowersCommand implements CommandExecutor {
                     }
 
                 }
+            }
+            //create arena (CreateArena)
+            else if(args[0].equalsIgnoreCase("createarena"))
+            {
+                if(hasPermission(sender, "towers.arena.createteam"))
+                {
+                    if(args.length < 2)
+                    {
+                        printHelp(sender, "arena");
+                        return false;
+                    }
+                    else
+                    {
+                        String arena_name = args[1];
+                        int team_size = Integer.parseInt(args[2]);
+                        //ToDo: метод создания арены
+                        sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.createarena"));
+                        return false;
+                    }
+                }
+                else
+                {
+                    sender.sendMessage(Configurations.getLocaleString("no-perm"));
+                    return false;
+                }
+            }
+            //remove arena (RemoveArena)
+            else if(args[0].equalsIgnoreCase("removearena"))
+            {
+                if(hasPermission(sender, "towers.arena.removearena"))
+                {
+                    if(args.length < 2)
+                    {
+                        printHelp(sender, "arena");
+                        return false;
+                    }
+                    else
+                    {
+                        String arena_name = args[1];
+                        //ToDo: метод удаления арены
+                        sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.removearena"));
+                        return false;
+                    }
+                }
+                else
+                {
+                    sender.sendMessage(Configurations.getLocaleString("no-perm"));
+                    return false;
+                }
+            }
+            //team list (TeamList)
+            else if(args[0].equalsIgnoreCase("teamlist"))
+            {
+                if(hasPermission(sender, "towers.arena.teamlist"))
+                {
+                    if(args.length < 2)
+                    {
+                        printHelp(sender, "arena");
+                        return false;
+                    }
+                    else
+                    {
+                        String arena_name = args[1];
+                        //ToDo: метод возвращения списка команд
+                        return false;
+                    }
+                }
+                else
+                {
+                    sender.sendMessage(Configurations.getLocaleString("no-perm"));
+                    return false;
+                }
+            }
+            //placingmode off
+            else if(args[0].equalsIgnoreCase("placingmodeoff"))
+            {
+                if(hasPermission(sender, "towers.arena.placingmodeoff"))
+                {
+                    //ToDo: выключение режима установки блоков
+                    sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.placingmodeoff"));
+                    return false;
+                }
+                else
+                {
+                    sender.sendMessage(Configurations.getLocaleString("no-perm"));
+                    return false;
+                }
+            }
+            //РАЗНОЕ, reload
+            else if(args[0].equalsIgnoreCase("reload"))
+            {
+                if(hasPermission(sender, "towers.misc.reload"))
+                {
+                    //ToDo: перезагрузка конфига
+                    sender.sendMessage(Configurations.getLocaleString("commands.towers.miscellanea.reload"));
+                }
+                else
+                {
+                    sender.sendMessage(Configurations.getLocaleString("no-perm"));
+                    return false;
+                }
+            }
+            //quick start (QuickStart)
+            else if(args[0].equalsIgnoreCase("quickstart"))
+            {
+                if(hasPermission(sender, "towers.misc.quickstart"))
+                {
+                    //ToDo: метод быстрого запуска
+                    sender.sendMessage(Configurations.getLocaleString("commands.towers.miscellanea.quickstart"));
+                }
+                else
+                {
+                    sender.sendMessage(Configurations.getLocaleString("no-perm"));
+                    return false;
+                }
+            }
+            //force start (ForceStart)
+            else if(args[0].equalsIgnoreCase("forcestart"))
+            {
+                if(hasPermission(sender, "towers.misc.forcestart"))
+                {
+                    //ToDo: метод быстрого запуска №2
+                    sender.sendMessage(Configurations.getLocaleString("commands.towers.miscellanea.forcestart"));
+                }
+                else
+                {
+                    sender.sendMessage(Configurations.getLocaleString("no-perm"));
+                    return false;
+                }
+            }
+            //force join (ForceJoin)
+            else if(args[0].equalsIgnoreCase("forcejoin"))
+            {
+                if(hasPermission(sender, "towers.misc.forcejoin"))
+                {
+                    if(args.length < 2)
+                    {
+                        //ToDo: метод крутого вопроса
+                        sender.sendMessage(Configurations.getLocaleString("commands.towers.miscellanea.forcejoin"));
+                    }
+                    else
+                    {
+                        printHelp(sender, "misc");
+                        return false;
+                    }
+                }
+                else
+                {
+                    sender.sendMessage(Configurations.getLocaleString("no-perm"));
+                    return false;
+                }
+            }
+            //stop
+            else if(args[0].equalsIgnoreCase("stop"))
+            {
+                if(hasPermission(sender, "towers.misc.stop"))
+                {
+                    //ToDo: метод остановки игры
+                    sender.sendMessage(Configurations.getLocaleString("commands.towers.miscellanea.stop"));
+                }
+                else
+                {
+                    sender.sendMessage(Configurations.getLocaleString("no-perm"));
+                    return false;
+                }
+            }
+            //Игрок, join
+            else if(args[0].equalsIgnoreCase("join"))
+            {
+                if(args.length < 2)
+                {
+                    //ToDo: метод захода на арену
+                    sender.sendMessage(Configurations.getLocaleString("commands.towers.players.join"));
+                }
+                else
+                {
+                    printHelp(sender, "player");
+                    return false;
+                }
+            }
+            //leave
+            else if(args[0].equalsIgnoreCase("leave"))
+            {
+                //ToDo: метод выхода с арены
+                sender.sendMessage(Configurations.getLocaleString("commands.towers.players.leave"));
+            }
+            else
+            {
+                printHelp(sender, "help");
             }
         }
 

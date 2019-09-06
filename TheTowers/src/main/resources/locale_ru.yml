@@ -57,4 +57,26 @@ commands:
       - '&3/towers forceJoin <Арена> &a→ Заходит на арену, даже если игра там началась.'
       - '&3/towers stop [Арена] &a→ Остановить игру.'
     arenas:
-      setlobby: '%prefix% &aЛобби для арены &3%arena%&a успешно поставлено на координатах &3%loc%&a!'
+      setlobby: '%prefix% &aЛобби для арены &3%arena%&a успешно поставлено на координатах &3%loc% &aна арене &3%arena%&a!'
+      team:
+        create: '%prefix% &aКоманда &3%team% &aуспешно создана для арены &3%arena%&a!'
+        remove: '%prefix% &aКоманда &3%team% &aуспешно удалена с арены &3%arena%&a!'
+        setsize: '%prefix% &aКоманде &3%team% &aуспешно изменён размер на &3%size%&a на арене &3%arena%&a!'
+        setspawn: '%prefix% &aКоманде &3%team% &aуспешно установлена точка спавна на координатах &3%loc% &aна арене &3%arena%&a!'
+        settroopsspawn: '%prefix% &aКоманде &3%team% &aуспешно установлена точка спавна мобов на координатах &3%loc% &aна арене &3%arena%&a!'
+        addwaypoint: '%prefix% &aКоманде &3%team% &aуспешно установлен поворот мобов на координатах &3%loc% &aна арене &3%arena%&a!'
+        removewaypoint: '%prefix% &aКоманде &3%team% &aуспешно убран поворот мобов на координатах &3%loc% &aна арене &3%arena%&a!'
+        settroopsend: '%prefix% &aКоманде &3%team% &aуспешно установлена конечная зона на арене &3%arena%&a!'
+        placingmodeon: '%prefix% &aКоманде &3%team% &aуспешно добавлен блок для установки башни на координатах &3%loc% &aна арене &3%arena%&a!'
+      createarena: '%prefix% &aАрена &3%arena% &aуспешно создана!'
+      removearena: '%prefix% &aАрена &3%arena% &aуспешно удалена!'
+      placingmodeoff: '%prefix% &aРежим установки блоков для башен выключен!'
+    miscellanea:
+      reload: '%prefix% &aКонфиг успешно перезагружен!'
+      quickstart: '%prefix% &aИгра успешно начата!'
+      forcestart: '%prefix% &aТаймер успешно запущен!'
+      forcejoin: '%prefix% &aВы успешно присоединились к арене!'
+      stop: '%prefix% &aИгра успешно остановлена!'
+    players:
+      join: '%prefix% &aВы успешно присоединились к арене &3%arena%&a!'
+      leave: '%prefix% &aВы успешно вышли из игры!'
