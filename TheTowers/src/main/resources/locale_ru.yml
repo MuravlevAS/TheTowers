@@ -80,3 +80,23 @@ commands:
     players:
       join: '%prefix% &aВы успешно присоединились к арене &3%arena%&a!'
       leave: '%prefix% &aВы успешно вышли из игры!'
+
+game:
+  starting: '%prefix% &aИгра начнётся через &3%seconds% секунд&a!'
+  started-title: '&aИгра начата!'
+  started-subtitile: '&eУдачи!'
+  description:
+    - '%prefix% &aКак играть в &7&lTheTowers:'
+    - '&aС помощью стойки для брони Вы можете'
+    - '&aстроить башни для защиты своего замка.'
+    - '&aЗащищайте его до последнего.'
+    - '&aС помощью сундука Вы можете'
+    - '&aОтправлять мобов противникам.'
+  damaged: '&aВы ударили команду %team_color%%team%&a (&c%troop%&a; &c%minus_hp%&a)!'
+  attacked: '&cВас ударила команда %team_color%%team%&a (&c%troop%&a; &c%minus_hp%&a)!'
+  getmoney: '&aВы получили &e%money%⏣&a!'
+  no-money: '&cУ Вас не хватает &e%money%⏣&a!'
+  sent: '&aВы отправили моба &c%troop%&a!'
+  win: '&aПОБЕДА!'
+  lose: '&cПРОИГРЫШ!'
+
