@@ -39,10 +39,21 @@ public class MainTowersCommand implements CommandExecutor {
         {
             if (hasPermission(sender, "towers.arenas"))
             {
-                // TODO: вывод хелпы по аренам
+                for(String string : Configurations.getLocaleStringList("commands.towers.arena")) {
+                    sender.sendMessage(string);
+                }
             }
             else {
-                // TODO: вывод сообщения о недостатке прав
+                sender.sendMessage(Configurations.getLocaleString("no-perm"));
+            }
+        }
+        else if (type.equalsIgnoreCase("arena 2"))
+        {
+            if(hasPermission(sender, "towers.arenas"))
+            {
+                for(String string : Configurations.getLocaleStringList("commands.towers.arena2")) {
+                    sender.sendMessage(string);
+                }
             }
         }
         else if (type.equalsIgnoreCase("help"))
@@ -66,24 +77,27 @@ public class MainTowersCommand implements CommandExecutor {
                 }
                 if (hasPermission(sender, "towers.player"))
                 {
-                    sender.sendMessage((Configurations.getLocaleString("commands.towers.help.player")));
+                    sender.sendMessage(Configurations.getLocaleString("commands.towers.help.player"));
+                }
+                if (hasPermission(sender, "towers.misc"))
+                {
+                    sender.sendMessage(Configurations.getLocaleString("commands.towers.help.misc"));
                 }
             }
         }
         else if (type.equalsIgnoreCase("player"))
         {
-            /*
-            TODO:
-                Вывод команд для игрока.
-                Здесь так же добавь forceJoin
-                или как там оно, но с проверкой прав.
-             */
+            for(String string : Configurations.getLocaleStringList("commands.towers.player")) {
+                sender.sendMessage(string);
+            }
         }
         else if (type.equalsIgnoreCase("misc"))
         {
             if (hasPermission(sender, "towers.help.misc"))
             {
-                // TODO: Вывод команд без категорий, так же с правами всё
+                for(String string : Configurations.getLocaleStringList("commands.towers.misc")) {
+                    sender.sendMessage(string);
+                }
             }
         }
     }
@@ -97,19 +111,17 @@ public class MainTowersCommand implements CommandExecutor {
             }
 
             if (args.length < 1) {
-                for (String string : Configurations.getLocaleStringList("commands.towers.help")) {
-                    sender.sendMessage(string);
-                }
+                printHelp(sender, "help");
                 return false;
             }
             //Arenas
             if (args[0].equalsIgnoreCase("arena")) {
-                if (args.length < 2) {
-                    for (String string : Configurations.getLocaleStringList("commands.towers.arena")) {
-                        sender.sendMessage(string);
-                    }
-                } else if (args[1].equalsIgnoreCase("2")) {
-
+                if(args.length < 2) {
+                    printHelp(sender, "arena");
+                    return false;
+                } else if(args[1].equalsIgnoreCase("2")) {
+                    printHelp(sender, "arena 2");
+                    return false;
                 }
             }
         }
