@@ -8,6 +8,7 @@ public class TroopCreeper extends AbstractTroop
 {
 	public TroopCreeper() 
 	{
+		super();
 		configSection = Configurations.getSettings().getConfigurationSection("troops.creeper");
 		setTitle	(configSection.getString("title"));
 		setCost		(configSection.getDouble("cost"));

@@ -1,10 +1,12 @@
 package ru.sgk.thetowers;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import org.spigotmc.SpigotConfig;
 import ru.sgk.thetowers.commands.MainTowersCommand;
 import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.game.data.PlayerData;
@@ -44,7 +46,10 @@ public class MainTowers extends JavaPlugin
 		getServer().getPluginCommand("towers").setExecutor(new MainTowersCommand());
 		
 		Logs.send("§aPlugin has enabled.");
-		
+
+		Logs.send(Bukkit.getVersion());
+		Logs.send(Bukkit.getBukkitVersion());
+
 		Board.initScoreboard();
 		for (Player p : Bukkit.getOnlinePlayers())
 		{
