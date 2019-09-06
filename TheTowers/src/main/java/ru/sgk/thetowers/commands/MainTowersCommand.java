@@ -7,7 +7,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import ru.sgk.thetowers.data.Configuration;
 import ru.sgk.thetowers.data.Configurations;
+import ru.sgk.thetowers.game.GameArenas;
+import ru.sgk.thetowers.game.data.PlayerData;
 import ru.sgk.thetowers.game.data.troops.AbstractTroop;
 import ru.sgk.thetowers.game.data.troops.TroopPhantom;
 import ru.sgk.thetowers.utils.Logs;
@@ -300,7 +303,7 @@ public class MainTowersCommand implements CommandExecutor {
                     {
                         String arena_name = args[1];
                         int team_size = Integer.parseInt(args[2]);
-                        //ToDo: метод создания арены
+                        GameArenas.createArena(arena_name);
                         sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.createarena"));
                         return false;
                     }
@@ -378,7 +381,8 @@ public class MainTowersCommand implements CommandExecutor {
             {
                 if(hasPermission(sender, "towers.misc.reload"))
                 {
-                    //ToDo: перезагрузка конфига
+                    Configurations.relaodConfig();
+                    Configurations.relaodSettings();
                     sender.sendMessage(Configurations.getLocaleString("commands.towers.miscellanea.reload"));
                 }
                 else
@@ -456,7 +460,7 @@ public class MainTowersCommand implements CommandExecutor {
             {
                 if(args.length < 2)
                 {
-                    //ToDo: метод захода на арену
+                    PlayerData.add((Player)sender);
                     sender.sendMessage(Configurations.getLocaleString("commands.towers.players.join"));
                 }
                 else
@@ -468,7 +472,7 @@ public class MainTowersCommand implements CommandExecutor {
             //leave
             else if(args[0].equalsIgnoreCase("leave"))
             {
-                //ToDo: метод выхода с арены
+                PlayerData.remove((Player)sender);
                 sender.sendMessage(Configurations.getLocaleString("commands.towers.players.leave"));
             }
             else
