@@ -27,7 +27,7 @@ public class Board implements Runnable
 
 	private static void getConfigList()
 	{
-		List<String> list = Configurations.getConfig().getStringList("scoreboard.lines");
+		List<String> list = Configurations.getConfig().getStringList("scoreboard.lobby.lines");
 		lines = Collections.synchronizedMap(new LinkedTreeMap<String, Integer>());
 		int i = 15;
 		for (String s : list)
@@ -38,7 +38,7 @@ public class Board implements Runnable
 	}
 	public static String getTitle()
 	{
-		return Configurations.getConfig().getString("scoreboard.title");
+		return Configurations.getConfig().getString("scoreboard.lobby.title");
 	}
 	private static int i = 0;
 	@Override
