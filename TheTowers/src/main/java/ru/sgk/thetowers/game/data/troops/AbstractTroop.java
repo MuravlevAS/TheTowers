@@ -1,11 +1,19 @@
 package ru.sgk.thetowers.game.data.troops;
 
+import net.minecraft.server.v1_14_R1.Vec3D;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionEffectTypeWrapper;
+import ru.sgk.thetowers.utils.Logs;
 
 import java.util.List;
 
@@ -26,15 +34,17 @@ public abstract class AbstractTroop
 	private Entity entityTemplate;
 	private boolean isKilled;
 	private boolean invisible = false;
+	private int currentWayPoint;
 
 	public AbstractTroop() {
-		
+		currentWayPoint = 0;
 	}
 
 	public void spawn(Location loc) throws NullPointerException {
 		entity = (LivingEntity) loc.getWorld().spawnEntity(loc, mobType);
 		entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(speed);
 		entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+		entity.setCollidable(false);
 	}
 
 	public void despawn(){
@@ -46,6 +56,7 @@ public abstract class AbstractTroop
 		if (entity != null){
 			isKilled = true;
 			entity.damage(entity.getHealth());
+
 		}
 	}
 
@@ -54,6 +65,27 @@ public abstract class AbstractTroop
 			if (damage >= entity.getHealth())
 				isKilled = true;
 			entity.damage(damage);
+		}
+	}
+
+	public void move(Location loc)
+	{
+		// TODO: move mob
+		Location eLoc = entity.getLocation();
+		double x = loc.getX() - eLoc.getX();
+		double y = loc.getY() - eLoc.getY();
+		double z = loc.getZ() - eLoc.getZ();
+		((CraftEntity)entity).getHandle().a((float)Math.sqrt(x*x + y*y + z*z), new Vec3D(x,y,z));
+		Logs.sendDebugMessage("mob moved from " + eLoc.getX() + " " + eLoc.getY() + " " + eLoc.getZ());
+		Logs.sendDebugMessage("mob moved to " + loc.getX() + " " + loc.getY() + " " + loc.getZ());
+		Logs.sendDebugMessage("direction is " + x + " " + y + " " + z);
+	}
+
+	public void moveNext()
+	{
+		if (wayPoints.size() >= currentWayPoint)
+		{
+			Player p = null;
 		}
 	}
 

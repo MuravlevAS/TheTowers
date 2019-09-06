@@ -8,6 +8,7 @@ public class TroopCaveSpider extends AbstractTroop
 {
 	public TroopCaveSpider() 
 	{
+		super();
 		configSection = Configurations.getSettings().getConfigurationSection("troops.cave-spider");
 		setTitle	(configSection.getString("title"));
 		setCost		(configSection.getDouble("cost"));

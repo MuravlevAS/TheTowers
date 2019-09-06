@@ -8,6 +8,7 @@ public class TroopSlime extends AbstractTroop
 {
 	public TroopSlime() 
 	{
+		super();
 		configSection = Configurations.getSettings().getConfigurationSection("troops.slime");
 		setTitle	(configSection.getString("title"));
 		setCost		(configSection.getDouble("cost"));

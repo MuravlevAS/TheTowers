@@ -8,6 +8,7 @@ public class TroopPhantom extends AbstractTroop
 {
 	public TroopPhantom()
 	{
+        super();
 		configSection = Configurations.getSettings().getConfigurationSection("troops.phantom");
 		setTitle	(configSection.getString("title"));
 		setCost		(configSection.getDouble("cost"));

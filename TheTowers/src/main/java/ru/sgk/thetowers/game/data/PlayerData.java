@@ -14,10 +14,11 @@ public class PlayerData
 	private Player player;
 	private static List<PlayerData> onlinePlayers = Collections.synchronizedList( new ArrayList<>());
 	private SimpleScoreboard customBoard = null;
-
+	private boolean wasFlying;
 	
 	public PlayerData(Player player) {
 		this.player = player;
+		wasFlying = player.getAllowFlight();
 		registerBoard();
 	}
 
@@ -60,9 +61,6 @@ public class PlayerData
 		return customBoard;
 	}
 
-	/**
-	 * @param customBoard the scoreboard to set
-	 */
 	public void registerBoard() 
 	{
 		customBoard = new SimpleScoreboard(Board.getTitle());
@@ -86,5 +84,14 @@ public class PlayerData
 	public static void remove(Player player)
 	{
 		onlinePlayers.removeIf((data) -> data.getPlayer().equals(player));
+	}
+
+	public boolean wasFlying()
+	{
+		return wasFlying;
+	}
+
+	public void setWasFlying(boolean wasFlying) {
+		this.wasFlying = wasFlying;
 	}
 }

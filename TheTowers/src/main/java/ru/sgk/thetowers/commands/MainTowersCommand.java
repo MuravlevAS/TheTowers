@@ -11,6 +11,8 @@ import ru.sgk.thetowers.game.data.troops.AbstractTroop;
 import ru.sgk.thetowers.game.data.troops.TroopPhantom;
 import ru.sgk.thetowers.utils.Logs;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.List;
 
 
@@ -111,6 +113,40 @@ public class MainTowersCommand implements CommandExecutor {
             {
                 sender.sendMessage(Configurations.getLocaleString("console"));
                 return false;
+            }
+            Player player = (Player) sender;
+
+            if (args.length == 1)
+            {
+                if (args[0].equalsIgnoreCase("move"))
+                {
+                    for (AbstractTroop troop : troops)
+                    {
+                        troop.move(player.getLocation());
+                    }
+                }
+            }
+            if (args.length == 2)
+            {
+                if (args[0].equalsIgnoreCase("spawn"))
+                {
+                    String type = args[1];
+                    String typeLower = type.toLowerCase();
+                    String troopType = typeLower.replaceFirst(String.valueOf(typeLower.charAt(0)), String.valueOf(typeLower.charAt(0)).toUpperCase());
+                    sender.sendMessage("type - " + troopType);
+                    try {
+
+                        Constructor<?> troopConstructor = Class.forName("ru.sgk.thetowers.game.data.troops.Troop" +troopType).getDeclaredConstructor();
+
+                        AbstractTroop troop = (AbstractTroop) troopConstructor.newInstance();
+                        troops.add(troop);
+                        troop.spawn(player.getLocation());
+                    }
+                    catch (Throwable t) {
+                        sender.sendMessage("troop not found");
+                    }
+                }
+
             }
 
             if (args.length < 1)

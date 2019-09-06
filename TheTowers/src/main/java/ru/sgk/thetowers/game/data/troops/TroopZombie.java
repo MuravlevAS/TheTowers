@@ -8,6 +8,7 @@ public class TroopZombie extends AbstractTroop
 {
 	public TroopZombie() 
 	{
+		super();
 		configSection = Configurations.getSettings().getConfigurationSection("troops.zombie");
 		setTitle	(configSection.getString("title"));
 		setCost		(configSection.getDouble("cost"));
