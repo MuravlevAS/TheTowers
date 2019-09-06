@@ -1,7 +1,30 @@
 lang: ru
 debug: true
 scoreboard:
-  title: 'TheTowers'
-  lines:
-  - 'health: %castle_health%'
+  lobby:
+    title: '&7&lTheTowers'
+    lines:
+      - '&0'
+      - '&fПобед: &c%towers_wins%'
+      - '&fПроигрышей: &c%towers_loses%'
+      - '&1'
+      - '&espigotmc.ru'
+  ingame:
+    title: '&7&lTheTowers'
+    lines:
+      - '&0'
+      - '&fЖизней: &c%castle_health%❤'
+      - '&fБаланс: &c%money%⏣'
+      - '&1'
+      - '&espigotmc.ru'
+  waiting:
+    title: '&7&lTheTowers'
+    lines:
+      - '&0'
+      - '&fОжидание'
+      - '&fигроков...'
+      - '&1'
+      - '&a%players%&6/&2%max_players%'
+      - '&2'
+      - '&espigotmc.ru'
 world-name: 'world'
