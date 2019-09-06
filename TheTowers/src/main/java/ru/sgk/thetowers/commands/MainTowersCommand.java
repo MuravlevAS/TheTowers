@@ -103,25 +103,100 @@ public class MainTowersCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("towers")) {
-            if (!(sender instanceof Player)) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    {
+        if (command.getName().equalsIgnoreCase("towers"))
+        {
+            if (!(sender instanceof Player))
+            {
                 sender.sendMessage(Configurations.getLocaleString("console"));
                 return false;
             }
 
-            if (args.length < 1) {
+            if (args.length < 1)
+            {
+                printHelp(sender, "help");
+                return false;
+            }
+            //Help
+            if(args[0].equalsIgnoreCase("help"))
+            {
                 printHelp(sender, "help");
                 return false;
             }
             //Arenas
-            if (args[0].equalsIgnoreCase("arena")) {
-                if(args.length < 2) {
+            else if (args[0].equalsIgnoreCase("arena"))
+            {
+                if(args.length < 2)
+                {
                     printHelp(sender, "arena");
                     return false;
-                } else if(args[1].equalsIgnoreCase("2")) {
+                }
+                else if(args[1].equalsIgnoreCase("2"))
+                {
                     printHelp(sender, "arena 2");
                     return false;
+                }
+                else
+                {
+                    if(args.length < 3)
+                    {
+                        printHelp(sender, "arena");
+                        return false;
+                    }
+                    else if(hasPermission(sender, "towers.arena.setlobby"))
+                    {
+                        if(args[2].equalsIgnoreCase("setlobby"))
+                        {
+                            String arena = args[1];
+                            //ToDo: Метод постановки лобби
+                            sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.setlobby"));
+                            return false;
+                        }
+                        else
+                        {
+                            if(args.length < 4) {
+                                printHelp(sender, "arena");
+                                return false;
+                            }
+                            else
+                            {
+                                if(args[2].equalsIgnoreCase("createteam"))
+                                {
+                                    String arena = args[1];
+                                    String color = args[3];
+                                    //ToDo: Метод создания команды
+                                    return false;
+                                }
+                                else if(args[2].equalsIgnoreCase("removeteam"))
+                                {
+                                    String arena = args[1];
+                                    String color = args[3];
+                                    //ToDo: Метод удаления команды
+                                    return false;
+                                }
+                                else if(args[2].equalsIgnoreCase("setteamsize"))
+                                {
+                                    String arena = args[1];
+                                    Integer size = Integer.parseInt(args[3]);
+                                    //ToDo: Метод изменения размера команды
+                                    return false;
+                                }
+                                else
+                                {
+                                    if(args[2].equalsIgnoreCase("team"))
+                                    {
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        sender.sendMessage(Configurations.getLocaleString("no-perm"));
+                    }
+
                 }
             }
         }
