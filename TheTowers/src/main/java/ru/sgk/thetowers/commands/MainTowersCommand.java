@@ -9,8 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.sgk.thetowers.data.Configuration;
 import ru.sgk.thetowers.data.Configurations;
+import ru.sgk.thetowers.game.GameArena;
 import ru.sgk.thetowers.game.GameArenas;
 import ru.sgk.thetowers.game.data.PlayerData;
+import ru.sgk.thetowers.game.data.teams.GameTeam;
+import ru.sgk.thetowers.game.data.teams.GameTeamColor;
 import ru.sgk.thetowers.game.data.troops.AbstractTroop;
 import ru.sgk.thetowers.game.data.troops.TroopPhantom;
 import ru.sgk.thetowers.utils.Logs;
@@ -190,7 +193,8 @@ public class MainTowersCommand implements CommandExecutor {
                         if(args[2].equalsIgnoreCase("setlobby"))
                         {
 
-                            //ToDo: Метод постановки лобби
+                            GameArena gameArena = GameArenas.getArena(arena);
+                            gameArena.setLobbyLocation(((Player) sender).getLocation());
                             sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.setlobby"));
                             return false;
                         }
@@ -205,7 +209,9 @@ public class MainTowersCommand implements CommandExecutor {
                                 if(args[2].equalsIgnoreCase("createteam"))
                                 {
                                     String color = args[3];
-                                    //ToDo: Метод создания команды
+                                    GameArena gameArena = GameArenas.getArena(arena);
+                                    gameArena.addTeam(new GameTeam(GameTeamColor.WHITE));
+                                    gameArena.saveToConfig();
                                     sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.create"));
                                     return false;
                                 }
@@ -218,8 +224,10 @@ public class MainTowersCommand implements CommandExecutor {
                                 }
                                 else if(args[2].equalsIgnoreCase("setteamsize"))
                                 {
-                                    Integer size = Integer.parseInt(args[3]);
-                                    //ToDo: Метод изменения размера команды
+                                    int size = Integer.parseInt(args[3]);
+                                    GameArena gameArena = GameArenas.getArena(arena);
+                                    gameArena.setTeamSize(size);
+                                    gameArena.saveToConfig();
                                     sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.setsize"));
                                     return false;
                                 }
@@ -303,7 +311,9 @@ public class MainTowersCommand implements CommandExecutor {
                     {
                         String arena_name = args[1];
                         int team_size = Integer.parseInt(args[2]);
-                        GameArenas.createArena(arena_name);
+                        GameArena arena = GameArenas.createArena(arena_name);
+                        arena.setTeamSize(team_size);
+                        arena.saveToConfig();
                         sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.createarena"));
                         return false;
                     }
