@@ -3,7 +3,6 @@ package ru.sgk.thetowers.game.events;
 import com.google.common.collect.Lists;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.TabCompleteEvent;
@@ -34,7 +33,8 @@ public class MainEvents implements Listener
 		List<String> completions = Lists.newArrayList();
 		if (buf.get(0).equalsIgnoreCase("/towers"))
 		{
-			if (buf.size() == 2 && e.getBuffer().endsWith(" ") || buf.size() == 3){
+			if (buf.size() == 2 && e.getBuffer().endsWith(" ") || buf.size() == 3)
+			{
 				if (buf.get(1).equalsIgnoreCase("arena"))
 				{
 					completions = GameArenas.toStringList();
