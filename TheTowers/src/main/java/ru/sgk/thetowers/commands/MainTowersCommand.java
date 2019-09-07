@@ -239,10 +239,10 @@ public class MainTowersCommand implements CommandExecutor {
 
                                         if(args[4].equalsIgnoreCase("setspawn"))
                                         {
-                                            int x, y, z;
-                                            x = Integer.parseInt(args[5]);
-                                            y = Integer.parseInt(args[6]);
-                                            z = Integer.parseInt(args[7]);
+                                            double x, y, z;
+                                            x = Double.parseDouble(args[5]);
+                                            y = Double.parseDouble(args[6]);
+                                            z = Double.parseDouble(args[7]);
                                             sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.setspawn"));
                                             return false;
                                         }
@@ -337,7 +337,8 @@ public class MainTowersCommand implements CommandExecutor {
                     else
                     {
                         String arena_name = args[1];
-                        //ToDo: метод удаления арены
+                        GameArena gameArena = GameArenas.removeArena(arena_name);
+                        gameArena.saveToConfig();
                         sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.removearena"));
                         return false;
                     }
@@ -436,7 +437,7 @@ public class MainTowersCommand implements CommandExecutor {
                 {
                     if(args.length < 2)
                     {
-                        //ToDo: метод крутого вопроса
+                        //ToDo: метод крутого присоединения
                         sender.sendMessage(Configurations.getLocaleString("commands.towers.miscellanea.forcejoin"));
                     }
                     else
