@@ -151,6 +151,7 @@ public class MainTowersCommand implements CommandExecutor {
                     }
                     catch (Throwable t) {
                         sender.sendMessage("troop not found");
+                        t.printStackTrace();
                     }
                 }
 
