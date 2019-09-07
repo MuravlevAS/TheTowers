@@ -12,6 +12,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityTargetEvent;
 import ru.sgk.thetowers.utils.Logs;
+import ru.sgk.thetowers.utils.mobs.CustomPathFinder;
 
 import java.util.List;
 
@@ -43,16 +44,22 @@ public abstract class AbstractTroop
 
 	public void spawn(Location loc) throws NullPointerException {
 		entity = (LivingEntity) loc.getWorld().spawnEntity(loc, mobType);
+
 		entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(speed);
-		entity.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(speed);
 		entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
-		entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+		entity.setHealth(health);
+		try {
+			((EntityInsentient)((CraftEntity)entity).getHandle()).setSlot(EnumItemSlot.HEAD, new ItemStack(Blocks.STONE_BUTTON));
+
+		}catch (Exception e) {}
+
+		try {
+			entity.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(speed);
+		}catch (Exception e) {}
 		entity.setCollidable(false);
-		entity.setCanPickupItems(false);
-
-		EntityLiving living = new EntityArmorStand(((CraftWorld)loc.getWorld()).getHandle(), loc.getX(),loc.getY(), loc.getZ());
-
-		((EntityInsentient)((CraftEntity)entity).getHandle()).setSlot(EnumItemSlot.HEAD, new ItemStack(Blocks.STONE_BUTTON));
+		entity.setInvulnerable(true);
+//		EntityLiving living = (EntityLiving) entity;
+//		living.setSlot(EnumItemSlot.HEAD, new ItemStack(Blocks.STONE_BUTTON));
 	}
 
 	public void despawn(){
@@ -85,10 +92,18 @@ public abstract class AbstractTroop
 		double y = loc.getY() - eLoc.getY();
 		double z = loc.getZ() - eLoc.getZ();
 //		target.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false));
-		EntityLiving living = new EntityArmorStand(((CraftWorld)loc.getWorld()).getHandle(), loc.getX(),loc.getY(), loc.getZ());
+//		EntityLiving living = new EntityArmorStand(((CraftWorld)loc.getWorld()).getHandle(), loc.getX(),loc.getY(), loc.getZ());
+		PathEntity pathEntity = ((EntityInsentient)((CraftEntity)entity).getHandle()).getNavigation().a(loc.getX(), loc.getY(), loc.getZ(),0);
 
-		((EntityInsentient)((CraftEntity)entity).getHandle()).setGoalTarget(living, EntityTargetEvent.TargetReason.TEMPT, false);
+//		new CustomPathFinder((EntityInsentient)((CraftEntity)entity).getHandle(), loc, speed).c();
 
+		EntityInsentient insentient = ((EntityInsentient)((CraftEntity)entity).getHandle());
+		insentient.getNavigation().a(pathEntity, 1D);
+
+//		insentient.goalSelector.a(new CustomPathFinder(insentient, loc, 1F));
+//		new CustomPathFinder(insentient, loc, 1F).c();
+//		insentient.targetSelector.a(0, new CustomPathFinder(insentient, loc, 1000f));
+		insentient.targetSelector.a(PathfinderGoal.Type.MOVE);
 		Logs.sendDebugMessage("mob moved from " + eLoc.getX() + " " + eLoc.getY() + " " + eLoc.getZ());
 		Logs.sendDebugMessage("mob moved to " + loc.getX() + " " + loc.getY() + " " + loc.getZ());
 		Logs.sendDebugMessage("direction is " + x + " " + y + " " + z);
