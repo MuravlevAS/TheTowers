@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Path;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,12 +21,14 @@ public class Configuration {
 		Logs.sendDebugMessage("load " + filename);
 		
 		File file = new File(MainTowers.getInstance().getDataFolder() + "/"+ filename);
+
 		FileConfiguration config = null;
-		
+
 		try(
 			InputStream in = MainTowers.class.getResourceAsStream("/" + filename);
 			Reader reader = new InputStreamReader(in))
 		{
+
 			// loading config
 			config = YamlConfiguration.loadConfiguration(file);
 			// set defaults to the config
