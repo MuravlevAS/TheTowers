@@ -46,6 +46,9 @@ public class GameArenas
         return null;
     }
 
+    /**
+     * Загружает арены из конфига
+     */
     @SuppressWarnings("unchecked")
     public static void loadArenas()
     {
@@ -138,6 +141,12 @@ public class GameArenas
         return stringList;
     }
 
+    /**
+     * Удаляет арену с именем <b>name</b> <br>
+     * После создания арены обязательно вызвать  saveToConfig();
+     * @param name - название арены, которую нужно удалить
+     * @return объект только что созданной арены
+     */
     public static GameArena createArena(String name)
     {
         GameArena arena = new GameArena(name);
@@ -146,6 +155,11 @@ public class GameArenas
         return getArena(name);
     }
 
+    /**
+     * Удаляет арену с именем <b>arena</b> <br>
+     * @param arena - название арены, которую нужно удалить
+     * @return объект удалённой арены
+     */
     public static GameArena removeArena(String arena)
     {
         for (int i = 0; i < arenas.size(); i++)
