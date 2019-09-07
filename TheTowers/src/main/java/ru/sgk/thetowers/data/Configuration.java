@@ -1,19 +1,11 @@
 package ru.sgk.thetowers.data;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URI;
-import java.net.URL;
-import java.nio.file.Path;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import ru.sgk.thetowers.MainTowers;
 import ru.sgk.thetowers.utils.Logs;
+
+import java.io.*;
 
 public class Configuration {
 	public synchronized static FileConfiguration loadConfig(String filename)
