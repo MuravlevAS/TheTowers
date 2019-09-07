@@ -1,13 +1,11 @@
 package ru.sgk.thetowers.commands;
 
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import ru.sgk.thetowers.data.Configuration;
 import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.game.GameArena;
 import ru.sgk.thetowers.game.GameArenas;
@@ -15,11 +13,8 @@ import ru.sgk.thetowers.game.data.PlayerData;
 import ru.sgk.thetowers.game.data.teams.GameTeam;
 import ru.sgk.thetowers.game.data.teams.GameTeamColor;
 import ru.sgk.thetowers.game.data.troops.AbstractTroop;
-import ru.sgk.thetowers.game.data.troops.TroopPhantom;
-import ru.sgk.thetowers.utils.Logs;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.List;
 
 
@@ -301,7 +296,7 @@ public class MainTowersCommand implements CommandExecutor {
             //create arena (CreateArena)
             else if(args[0].equalsIgnoreCase("createarena"))
             {
-                if(hasPermission(sender, "towers.arena.createteam"))
+                if(hasPermission(sender, "towers.arena.createarena"))
                 {
                     if(args.length < 2)
                     {
@@ -315,7 +310,8 @@ public class MainTowersCommand implements CommandExecutor {
                         GameArena arena = GameArenas.createArena(arena_name);
                         arena.setTeamSize(team_size);
                         arena.saveToConfig();
-                        sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.createarena"));
+                        sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.createarena")
+                                .replaceAll("%arena%", arena_name));
                         return false;
                     }
                 }
@@ -340,7 +336,8 @@ public class MainTowersCommand implements CommandExecutor {
                         String arena_name = args[1];
                         GameArena gameArena = GameArenas.removeArena(arena_name);
                         gameArena.saveToConfig();
-                        sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.removearena"));
+                        sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.removearena")
+                                .replaceAll("%arena%", arena_name));
                         return false;
                     }
                 }
@@ -387,6 +384,18 @@ public class MainTowersCommand implements CommandExecutor {
                     sender.sendMessage(Configurations.getLocaleString("no-perm"));
                     return false;
                 }
+            }
+            //player help
+            else if(args[0].equalsIgnoreCase("player"))
+            {
+                printHelp(sender, "player");
+                return false;
+            }
+            //misc help
+            else if(args[0].equalsIgnoreCase("misc"))
+            {
+                printHelp(sender, "misc");
+                return false;
             }
             //РАЗНОЕ, reload
             else if(args[0].equalsIgnoreCase("reload"))
@@ -460,6 +469,7 @@ public class MainTowersCommand implements CommandExecutor {
                 {
                     //ToDo: метод остановки игры
                     sender.sendMessage(Configurations.getLocaleString("commands.towers.miscellanea.stop"));
+                    return false;
                 }
                 else
                 {
@@ -470,10 +480,13 @@ public class MainTowersCommand implements CommandExecutor {
             //Игрок, join
             else if(args[0].equalsIgnoreCase("join"))
             {
-                if(args.length < 2)
+                if(args.length == 2)
                 {
+                    String arena_name = args[1];
                     PlayerData.add((Player)sender);
-                    sender.sendMessage(Configurations.getLocaleString("commands.towers.players.join"));
+                    sender.sendMessage(Configurations.getLocaleString("commands.towers.players.join")
+                            .replaceAll("%arena%", arena_name));
+                    return false;
                 }
                 else
                 {
@@ -486,6 +499,7 @@ public class MainTowersCommand implements CommandExecutor {
             {
                 PlayerData.remove((Player)sender);
                 sender.sendMessage(Configurations.getLocaleString("commands.towers.players.leave"));
+                return false;
             }
             else
             {
