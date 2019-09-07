@@ -1,24 +1,24 @@
 package ru.sgk.thetowers.game.data.troops;
 
-import net.minecraft.server.v1_14_R1.Vec3D;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
-import org.bukkit.Bukkit;
+import com.google.common.collect.Lists;
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionEffectTypeWrapper;
+import org.bukkit.event.entity.EntityTargetEvent;
 import ru.sgk.thetowers.utils.Logs;
 
 import java.util.List;
 
-public abstract class AbstractTroop 
+public abstract class AbstractTroop
 {
+
+	public static List<AbstractTroop> allSpawnedTroops = Lists.newArrayList();
 	protected ConfigurationSection configSection;
 	private String title;
 	private double damage;
@@ -35,6 +35,7 @@ public abstract class AbstractTroop
 	private boolean isKilled;
 	private boolean invisible = false;
 	private int currentWayPoint;
+    private Location movingTo;
 
 	public AbstractTroop() {
 		currentWayPoint = 0;
@@ -43,8 +44,15 @@ public abstract class AbstractTroop
 	public void spawn(Location loc) throws NullPointerException {
 		entity = (LivingEntity) loc.getWorld().spawnEntity(loc, mobType);
 		entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(speed);
+		entity.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(speed);
 		entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+		entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 		entity.setCollidable(false);
+		entity.setCanPickupItems(false);
+
+		EntityLiving living = new EntityArmorStand(((CraftWorld)loc.getWorld()).getHandle(), loc.getX(),loc.getY(), loc.getZ());
+
+		((EntityInsentient)((CraftEntity)entity).getHandle()).setSlot(EnumItemSlot.HEAD, new ItemStack(Blocks.STONE_BUTTON));
 	}
 
 	public void despawn(){
@@ -64,6 +72,7 @@ public abstract class AbstractTroop
 		if (entity != null){
 			if (damage >= entity.getHealth())
 				isKilled = true;
+			else isKilled = false;
 			entity.damage(damage);
 		}
 	}
@@ -75,19 +84,92 @@ public abstract class AbstractTroop
 		double x = loc.getX() - eLoc.getX();
 		double y = loc.getY() - eLoc.getY();
 		double z = loc.getZ() - eLoc.getZ();
-		((CraftEntity)entity).getHandle().a((float)Math.sqrt(x*x + y*y + z*z), new Vec3D(x,y,z));
+//		target.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false));
+		EntityLiving living = new EntityArmorStand(((CraftWorld)loc.getWorld()).getHandle(), loc.getX(),loc.getY(), loc.getZ());
+
+		((EntityInsentient)((CraftEntity)entity).getHandle()).setGoalTarget(living, EntityTargetEvent.TargetReason.TEMPT, false);
+
 		Logs.sendDebugMessage("mob moved from " + eLoc.getX() + " " + eLoc.getY() + " " + eLoc.getZ());
 		Logs.sendDebugMessage("mob moved to " + loc.getX() + " " + loc.getY() + " " + loc.getZ());
 		Logs.sendDebugMessage("direction is " + x + " " + y + " " + z);
+        movingTo = loc;
 	}
 
 	public void moveNext()
 	{
 		if (wayPoints.size() >= currentWayPoint)
 		{
-			Player p = null;
+			if (movingTo == null || entity.getLocation().equals(movingTo))
+			{
+                move(wayPoints.get(currentWayPoint - 1));
+                currentWayPoint++;
+            }
 		}
+		else {
+            move(endLocation);
+        }
 	}
+
+	public void addWayPoint(Location loc)
+    {
+        wayPoints.add(loc);
+    }
+
+    /**
+     * Удаляет ближайшую точку на расстоянии <b>range</b> блоков от локации <b>loc</b>
+     */
+    public Location removeWayPoint(Location loc, int range)
+    {
+        if (wayPoints.size() > 0)
+        {
+            Location point0 = wayPoints.get(0);
+            double dx0 = point0.getX() - loc.getX();
+            double dy0 = point0.getY() - loc.getY();
+            double dz0 = point0.getZ() - loc.getZ();
+            double minL = Math.sqrt(dx0 * dx0 + dy0 * dy0 + dz0 * dz0);
+            int minI = -1;
+            for (int i = 0; i < wayPoints.size(); i++)
+            {
+                double dx = wayPoints.get(i).getX() - loc.getX();
+                double dy = wayPoints.get(i).getY() - loc.getY();
+                double dz = wayPoints.get(i).getZ() - loc.getZ();
+                double l = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                if (l <= range && minL >= l)
+                {
+                    minL = l;
+                    minI = i;
+                }
+            }
+            if (minI >= 0)
+                return wayPoints.remove(minI);
+        }
+        return null;
+    }
+
+    /**
+     * Удаляет все точки на расстоянии <b>range</b> от точки <b>loc</b>
+     * @return возвращает список удалённых точке
+     */
+    public List<Location> removeAllWayPointsInRange(Location loc, int range)
+    {
+        List<Location> removed = Lists.newArrayList();
+        int i = 0;
+        while (i < wayPoints.size())
+        {
+            double dx = wayPoints.get(i).getX() - loc.getX();
+            double dy = wayPoints.get(i).getY() - loc.getY();
+            double dz = wayPoints.get(i).getZ() - loc.getZ();
+            double l = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            if (l <= range)
+            {
+                removed.add(wayPoints.remove(i));
+                wayPoints.remove(i);
+                continue;
+            }
+            i++;
+        }
+        return removed;
+    }
 
 	public void update(){
 		// TODO: update troops
@@ -102,7 +184,11 @@ public abstract class AbstractTroop
 //	}
 
 
-	public boolean isInvisible() {
+    public Location getMovingTo() {
+        return movingTo;
+    }
+
+    public boolean isInvisible() {
 		return invisible;
 	}
 
@@ -158,14 +244,14 @@ public abstract class AbstractTroop
 		this.cost = cost;
 	}
 	
-	public double getHealth() 
+	public double getHealth()
 	{
 		return health;
 	}
 	
-	public void setHealth(double health) 
+	public void setHealth(double troopHealth)
 	{
-		this.health = health;
+		this.health = troopHealth;
 	}
 	
 	public double getKilled() 
