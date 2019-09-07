@@ -104,4 +104,15 @@ public class GameArena
         this.teamSize = teamSize;
         this.maxPlayers = teams.size()*this.teamSize;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return this == null;
+        if (this == obj) return true;
+        if (obj.getClass() == getClass()) return false;
+
+        GameArena arena = (GameArena)obj;
+        return arena.getArenaName().equalsIgnoreCase(this.arenaName);
+
+    }
 }

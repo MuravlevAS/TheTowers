@@ -24,6 +24,7 @@ public class GameArenas
         return arenas;
     }
 
+
     public static boolean addArena(GameArena arena)
     {
         if (!arenas.contains(arena))
@@ -144,6 +145,19 @@ public class GameArenas
             return new GameArena(name);
         return getArena(name);
     }
+
+    public static GameArena removeArena(String arena)
+    {
+        for (int i = 0; i < arenas.size(); i++)
+        {
+            if (arenas.get(i).getArenaName().equalsIgnoreCase(arena)){
+                return arenas.remove(i);
+            }
+        }
+        return null;
+    }
+
+
     private static void loadConfig(){
         arenasConfig = Configuration.loadConfig("arenas.yml");
     }
