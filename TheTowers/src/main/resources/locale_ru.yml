@@ -97,6 +97,7 @@ game:
   getmoney: '&aВы получили &e%money%⏣&a!'
   no-money: '&cУ Вас не хватает &e%money%⏣&a!'
   sent: '&aВы отправили моба &c%troop%&a!'
-  win: '&aПОБЕДА!'
-  lose: '&cПРОИГРЫШ!'
+  win-title: '&aПОБЕДА!'
+  lose-title: '&cПРОИГРЫШ!'
+  cant-place: '&cВы не можете ставить башни здесь!'
 
