@@ -1,0 +1,34 @@
+package ru.sgk.thetowers.utils.mobs;
+
+import net.minecraft.server.v1_14_R1.EntityInsentient;
+import net.minecraft.server.v1_14_R1.Navigation;
+import net.minecraft.server.v1_14_R1.PathEntity;
+import net.minecraft.server.v1_14_R1.PathfinderGoal;
+import org.bukkit.Location;
+
+public class CustomPathFinder extends PathfinderGoal {
+
+    private double speed;
+    private Navigation navigation;
+    private Location loc;
+    private EntityInsentient entity;
+
+    public CustomPathFinder(EntityInsentient entity, Location loc, double speed)
+    {
+        this.entity = entity;
+        this.loc = loc;
+        this.speed = speed;
+    }
+
+    public boolean a()
+    {
+        return true;
+    }
+
+    public void c()
+    {
+        PathEntity pathEntity = entity.getNavigation().a(loc.getX(), loc.getY(), loc.getZ(),0);
+
+        this.entity.getNavigation().a(loc.getX(), loc.getY(), loc.getZ(), speed);
+    }
+}
