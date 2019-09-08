@@ -1,6 +1,8 @@
 /target/
 /.idea/
 *.imi
+.imi
+TheTowers.imi
 /.settings/
 .classpath
 ../.idea

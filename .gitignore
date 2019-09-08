@@ -1,7 +1,9 @@
-/target/ 
-/.idea/ 
-*.imi 
-/.settings/ 
-.classpath 
-../.idea 
+/target/
+/.idea/
+*.imi
+.imi
+TheTowers.imi
+/.settings/
+.classpath
+../.idea
 /out/
