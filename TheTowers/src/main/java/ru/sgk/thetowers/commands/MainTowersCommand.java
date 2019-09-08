@@ -145,7 +145,7 @@ public class MainTowersCommand implements CommandExecutor {
                         troop.spawn(player.getLocation());
                     }
                     catch (Throwable t) {
-                        sender.sendMessage("troop not found");
+                        sender.sendMessage("&cВозникла ошибка. Проверьте правильность написание типа моба");
                         t.printStackTrace();
                     }
                 }
