@@ -15,6 +15,7 @@ import ru.sgk.thetowers.utils.Logs;
 import ru.sgk.thetowers.utils.mobs.CustomPathFinder;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractTroop
 {
@@ -42,24 +43,34 @@ public abstract class AbstractTroop
 		currentWayPoint = 0;
 	}
 
-	public void spawn(Location loc) throws NullPointerException {
-		entity = (LivingEntity) loc.getWorld().spawnEntity(loc, mobType);
+	public void spawn() throws NullPointerException {
+		if (entity == null)
+		{
+			entity = (LivingEntity) Objects.requireNonNull(spawnLocation.getWorld()).spawnEntity(spawnLocation, mobType);
 
-		entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(speed);
-		entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
-		entity.setHealth(health);
-		try {
-			((EntityInsentient)((CraftEntity)entity).getHandle()).setSlot(EnumItemSlot.HEAD, new ItemStack(Blocks.STONE_BUTTON));
+			entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(speed);
+			entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+			entity.setHealth(health);
+			try {
+				((EntityInsentient) ((CraftEntity) entity).getHandle()).setSlot(EnumItemSlot.HEAD, new ItemStack(Blocks.STONE_BUTTON));
 
-		}catch (Exception e) {}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-		try {
-			entity.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(speed);
-		}catch (Exception e) {}
-		entity.setCollidable(false);
-		entity.setInvulnerable(true);
+			try {
+				entity.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(speed);
+			} catch (Exception e) {
+			}
+			entity.setCollidable(false);
+			entity.setInvulnerable(true);
+		}
 //		EntityLiving living = (EntityLiving) entity;
 //		living.setSlot(EnumItemSlot.HEAD, new ItemStack(Blocks.STONE_BUTTON));
+	}
+	public void spawn(Location loc) {
+		this.setSpawnLocation(loc);
+		spawn();
 	}
 
 	public void despawn(){
@@ -86,35 +97,36 @@ public abstract class AbstractTroop
 
 	public void move(Location loc)
 	{
-		// TODO: move mob
-		Location eLoc = entity.getLocation();
-		double x = loc.getX() - eLoc.getX();
-		double y = loc.getY() - eLoc.getY();
-		double z = loc.getZ() - eLoc.getZ();
-//		target.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false));
-//		EntityLiving living = new EntityArmorStand(((CraftWorld)loc.getWorld()).getHandle(), loc.getX(),loc.getY(), loc.getZ());
-		PathEntity pathEntity = ((EntityInsentient)((CraftEntity)entity).getHandle()).getNavigation().a(loc.getX(), loc.getY(), loc.getZ(),0);
+        EntityInsentient insentient = ((EntityInsentient)((CraftEntity)entity).getHandle());
+        PathEntity pathEntity = insentient.getNavigation().a(loc.getBlockX(), loc.getBlockX(), loc.getBlockX(),0);
+        insentient.getNavigation().a(pathEntity, 1D);
+        insentient.targetSelector.a(PathfinderGoal.Type.MOVE);
 
-//		new CustomPathFinder((EntityInsentient)((CraftEntity)entity).getHandle(), loc, speed).c();
+        PathfinderGoal pathfinder = new CustomPathFinder(insentient, loc, 1D);
 
-		EntityInsentient insentient = ((EntityInsentient)((CraftEntity)entity).getHandle());
-		insentient.getNavigation().a(pathEntity, 1D);
-
-//		insentient.goalSelector.a(new CustomPathFinder(insentient, loc, 1F));
-//		new CustomPathFinder(insentient, loc, 1F).c();
-//		insentient.targetSelector.a(0, new CustomPathFinder(insentient, loc, 1000f));
-		insentient.targetSelector.a(PathfinderGoal.Type.MOVE);
-		Logs.sendDebugMessage("mob moved from " + eLoc.getX() + " " + eLoc.getY() + " " + eLoc.getZ());
-		Logs.sendDebugMessage("mob moved to " + loc.getX() + " " + loc.getY() + " " + loc.getZ());
-		Logs.sendDebugMessage("direction is " + x + " " + y + " " + z);
+        if (pathfinder.a())
+        {
+            pathfinder.c();
+            pathfinder.e();
+        }
         movingTo = loc;
 	}
 
 	public void moveNext()
 	{
+
+		int x = entity.getLocation().getBlockX();
+		int y = entity.getLocation().getBlockY();
+		int z = entity.getLocation().getBlockZ();
+		// d - destination
+		int dx = movingTo.getBlockX();
+		int dy = movingTo.getBlockY();
+		int dz = movingTo.getBlockZ();
+
+
 		if (wayPoints.size() >= currentWayPoint)
 		{
-			if (movingTo == null || entity.getLocation().equals(movingTo))
+			if (movingTo == null || (x == dx && y == dy && z == dz))
 			{
                 move(wayPoints.get(currentWayPoint - 1));
                 currentWayPoint++;
@@ -188,12 +200,48 @@ public abstract class AbstractTroop
 
 	public void update(){
 		// TODO: update troops
+		int x = entity.getLocation().getBlockX();
+		int y = entity.getLocation().getBlockY();
+		int z = entity.getLocation().getBlockZ();
+		// d - destination
+		int dx = movingTo.getBlockX();
+		int dy = movingTo.getBlockY();
+		int dz = movingTo.getBlockZ();
+
+		moveNext();
+
 	}
+
+
 
 	public boolean isKilled() {
 		return isKilled;
 	}
 //
+
+	public Location getSpawnLocation() {
+		return spawnLocation;
+	}
+
+	public void setSpawnLocation(Location spawnLocation) {
+		this.spawnLocation = spawnLocation;
+	}
+
+	public Location getEndLocation() {
+		return endLocation;
+	}
+
+	public void setEndLocation(Location endLocation) {
+		this.endLocation = endLocation;
+	}
+
+	public int getCurrentWayPoint() {
+		return currentWayPoint;
+	}
+
+	public void setCurrentWayPoint(int currentWayPoint) {
+		this.currentWayPoint = currentWayPoint;
+	}
 //	public void setKilled(boolean isKilled) {
 //		this.isKilled = isKilled;
 //	}
