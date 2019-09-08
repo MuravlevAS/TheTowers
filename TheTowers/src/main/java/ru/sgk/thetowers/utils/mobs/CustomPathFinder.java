@@ -19,16 +19,27 @@ public class CustomPathFinder extends PathfinderGoal {
         this.loc = loc;
         this.speed = speed;
     }
-
+    @Override
     public boolean a()
     {
         return true;
     }
 
+    @Override
     public void c()
     {
+
         PathEntity pathEntity = entity.getNavigation().a(loc.getX(), loc.getY(), loc.getZ(),0);
 
         this.entity.getNavigation().a(loc.getX(), loc.getY(), loc.getZ(), speed);
+
+//        entity.targetSelector.a(PathfinderGoal.Type.MOVE);
+    }
+
+    @Override
+    public boolean b()
+    {
+
+        return true;
     }
 }
