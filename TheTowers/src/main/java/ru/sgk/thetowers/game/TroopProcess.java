@@ -3,6 +3,7 @@ package ru.sgk.thetowers.game;
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import ru.sgk.thetowers.MainTowers;
+import ru.sgk.thetowers.game.data.teams.GameTeam;
 import ru.sgk.thetowers.game.data.troops.AbstractTroop;
 
 import java.util.Collections;
@@ -14,7 +15,7 @@ public class TroopProcess
     private static List<AbstractTroop> remove = Collections.synchronizedList(Lists.newArrayList());
     private static int taskId = -1;
 
-    synchronized public static void add(AbstractTroop troop)
+    synchronized public static void add(AbstractTroop troop, GameTeam team)
     {
         for (AbstractTroop t : troops)
         {
@@ -22,7 +23,7 @@ public class TroopProcess
                 return;
         }
         troops.add(troop);
-
+        troop.spawn();
         if (troops.size() == 1 && taskId == -1)
             Bukkit.getScheduler().scheduleSyncRepeatingTask(MainTowers.getInstance(), TroopProcess::update, 0, 1);
     }
@@ -31,7 +32,11 @@ public class TroopProcess
         for (AbstractTroop troop : troops)
         {
             troop.update();
-            if (troop.isKilled()) remove(troop);
+            if (troop.isKilled())
+            {
+                // TODO: Отправка тиме статуса о том, что моб умер.
+                remove(troop);
+            }
         }
         removeAll();
     }
@@ -39,7 +44,8 @@ public class TroopProcess
     {
         remove.add(troop);
     }
-    private static void removeAll(){
+    private static void removeAll()
+    {
         try
         {
             troops.removeAll(remove);

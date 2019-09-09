@@ -5,14 +5,12 @@ import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.EntityTargetEvent;
-import ru.sgk.thetowers.utils.Logs;
-import ru.sgk.thetowers.utils.mobs.CustomPathFinder;
+import ru.sgk.thetowers.game.data.teams.GameTeam;
+import ru.sgk.thetowers.utils.CustomPathfinder;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,8 +36,11 @@ public abstract class AbstractTroop
 	private boolean invisible = false;
 	private int currentWayPoint;
     private Location movingTo;
+    private GameTeam parentTeam;
 
-	public AbstractTroop() {
+	public AbstractTroop(GameTeam parentTeam)
+    {
+        this.parentTeam = parentTeam;
 		currentWayPoint = 0;
 	}
 
@@ -102,7 +103,7 @@ public abstract class AbstractTroop
         insentient.getNavigation().a(pathEntity, 1D);
         insentient.targetSelector.a(PathfinderGoal.Type.MOVE);
 
-        PathfinderGoal pathfinder = new CustomPathFinder(insentient, loc, 1D);
+        PathfinderGoal pathfinder = new CustomPathfinder(insentient, loc, 1D);
 
         if (pathfinder.a())
         {
@@ -123,21 +124,43 @@ public abstract class AbstractTroop
 		int dy = movingTo.getBlockY();
 		int dz = movingTo.getBlockZ();
 
-
-		if (wayPoints.size() >= currentWayPoint)
-		{
-			if (movingTo == null || (x == dx && y == dy && z == dz))
-			{
+        if (wayPoints.size() >= currentWayPoint)
+        {
+            if (movingTo == null || (x == dx && y == dy && z == dz))
+            {
                 move(wayPoints.get(currentWayPoint - 1));
                 currentWayPoint++;
             }
-		}
-		else {
+            else move(wayPoints.get(currentWayPoint));
+        }
+        else
+        {
             move(endLocation);
+        }
+        if (movingTo.equals(endLocation) && (x == dx && y == dy && z == dz))
+        {
+            endMoving();
         }
 	}
 
-	public void addWayPoint(Location loc)
+	public void endMoving()
+    {
+        parentTeam.sendDamage(this);
+        kill();
+        // todo: end of moving
+    }
+
+    public GameTeam getParentTeam()
+    {
+        return parentTeam;
+    }
+
+    public void setParentTeam(GameTeam parentTeam)
+    {
+        this.parentTeam = parentTeam;
+    }
+
+    public void addWayPoint(Location loc)
     {
         wayPoints.add(loc);
     }

@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import ru.sgk.thetowers.data.Configurations;
+import ru.sgk.thetowers.game.TroopProcess;
 import ru.sgk.thetowers.game.data.towers.AbstractTower;
 import ru.sgk.thetowers.game.data.troops.AbstractTroop;
 
@@ -20,12 +21,11 @@ public class GameTeam
     private Location troopsEnd;
     private GameTeamArea teamArea;
     private List<Player> players;
-    private List<AbstractTroop> spawnedTroops;
     private List<Block> towerBlocks;
+    private double health;
 
     public GameTeam(GameTeamColor color) {
         this.color = color;
-        spawnedTroops = new ArrayList<>();
         this.coins = 0;
         this.placedTowers = new ArrayList<>();
         this.troopWay = new ArrayList<>();
@@ -48,8 +48,16 @@ public class GameTeam
 
     public void spawnTroop(AbstractTroop troop)
     {
-        troop.spawn(troopSpawn);
-        spawnedTroops.add(troop);
+        troop.setSpawnLocation(troopSpawn);
+        troopWay.forEach(troop::addWayPoint);
+        troop.setEndLocation(troopsEnd);
+
+        TroopProcess.add(troop, this);
+    }
+
+    public void sendDamage(AbstractTroop damager)
+    {
+        health -= damager.getDamage();
     }
 
     public void sendTroops(Player sender, GameTeam teamToSend, AbstractTroop... troops)
@@ -57,12 +65,17 @@ public class GameTeam
         for (AbstractTroop t : troops)
         {
             if (coins > t.getCost()){
-                teamToSend.spawnTroop(t);
+                t.setSpawnLocation(teamToSend.troopSpawn);
+                teamToSend.troopWay.forEach(t::addWayPoint);
+                t.setEndLocation(teamToSend.troopsEnd);
+
+                TroopProcess.add(t, teamToSend);
                 sender.sendMessage(Configurations.getLocaleString("troop-sended").replaceAll("%team%", teamToSend.toString()));
             }
 
         }
     }
+
 
     public void setTroopsEnd(Location troopsEnd) {
         this.troopsEnd = troopsEnd;
@@ -71,7 +84,6 @@ public class GameTeam
     public Location getTroopsEnd() {
         return troopsEnd;
     }
-
 
     public GameTeamArea getArea() {
         return teamArea;

@@ -3,12 +3,13 @@ package ru.sgk.thetowers.game.data.troops;
 import org.bukkit.entity.EntityType;
 
 import ru.sgk.thetowers.data.Configurations;
+import ru.sgk.thetowers.game.data.teams.GameTeam;
 
 public class TroopPhantom extends AbstractTroop 
 {
-	public TroopPhantom()
+	public TroopPhantom(GameTeam parentTeam)
 	{
-        super();
+        super(parentTeam);
 		configSection = Configurations.getSettings().getConfigurationSection("troops.phantom");
 		setTitle	(configSection.getString("title"));
 		setCost		(configSection.getDouble("cost"));
