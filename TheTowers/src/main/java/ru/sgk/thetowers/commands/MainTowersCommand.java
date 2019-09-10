@@ -226,6 +226,7 @@ public class MainTowersCommand implements CommandExecutor {
                                     GameArena gameArena = GameArenas.getArena(arena);
                                     gameArena.setTeamSize(size);
                                     gameArena.saveToConfig();
+                                    GameArenas.saveConfig();
                                     sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.setsize"));
                                     return true;
                                 }
