@@ -114,7 +114,7 @@ public class MainTowersCommand implements CommandExecutor {
             if (!(sender instanceof Player))
             {
                 sender.sendMessage(Configurations.getLocaleString("console"));
-                return false;
+                return true;
             }
             Player player = (Player) sender;
 
@@ -157,13 +157,13 @@ public class MainTowersCommand implements CommandExecutor {
             if (args.length < 1)
             {
                 printHelp(sender, "help");
-                return false;
+                return true;
             }
             //Help
             if(args[0].equalsIgnoreCase("help"))
             {
                 printHelp(sender, "help");
-                return false;
+                return true;
             }
             //Arenas
             else if (args[0].equalsIgnoreCase("arena"))
@@ -171,19 +171,19 @@ public class MainTowersCommand implements CommandExecutor {
                 if(args.length < 2)
                 {
                     printHelp(sender, "arena");
-                    return false;
+                    return true;
                 }
                 else if(args[1].equalsIgnoreCase("2"))
                 {
                     printHelp(sender, "arena 2");
-                    return false;
+                    return true;
                 }
                 else
                 {
                     if(args.length < 3)
                     {
                         printHelp(sender, "arena");
-                        return false;
+                        return true;
                     }
                     else if(hasPermission(sender, "towers.arena.setlobby"))
                     {
@@ -194,13 +194,13 @@ public class MainTowersCommand implements CommandExecutor {
                             GameArena gameArena = GameArenas.getArena(arena);
                             gameArena.setLobbyLocation(((Player) sender).getLocation());
                             sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.setlobby"));
-                            return false;
+                            return true;
                         }
                         else
                         {
                             if(args.length < 4) {
                                 printHelp(sender, "arena");
-                                return false;
+                                return true;
                             }
                             else
                             {
@@ -211,14 +211,14 @@ public class MainTowersCommand implements CommandExecutor {
                                     gameArena.addTeam(new GameTeam(GameTeamColor.WHITE));
                                     gameArena.saveToConfig();
                                     sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.create"));
-                                    return false;
+                                    return true;
                                 }
                                 else if(args[2].equalsIgnoreCase("removeteam"))
                                 {
                                     String color = args[3];
                                     //ToDo: Метод удаления команды
                                     sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.remove"));
-                                    return false;
+                                    return true;
                                 }
                                 else if(args[2].equalsIgnoreCase("setteamsize"))
                                 {
@@ -227,7 +227,7 @@ public class MainTowersCommand implements CommandExecutor {
                                     gameArena.setTeamSize(size);
                                     gameArena.saveToConfig();
                                     sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.setsize"));
-                                    return false;
+                                    return true;
                                 }
                                 else
                                 {
@@ -242,38 +242,38 @@ public class MainTowersCommand implements CommandExecutor {
                                             y = Double.parseDouble(args[6]);
                                             z = Double.parseDouble(args[7]);
                                             sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.setspawn"));
-                                            return false;
+                                            return true;
                                         }
                                         else if(args[4].equalsIgnoreCase("settroopsspawn"))
                                         {
                                             Location location = ((Player) sender).getLocation();
                                             //ToDo: Метод установки спавна мобов
                                             sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.settroopsspawn"));
-                                            return false;
+                                            return true;
                                         }
                                         else if(args[4].equalsIgnoreCase("addwaypoint"))
                                         {
                                             Location location = ((Player) sender).getLocation();
                                             //ToDo: Метод добавления поворота
                                             sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.addwaypoint"));
-                                            return false;
+                                            return true;
                                         }
                                         else if(args[4].equalsIgnoreCase("removewaypoint"))
                                         {
                                             //ToDo: Метод убирания поворота
                                             sender.sendMessage(Configurations.getLocaleString("commands.tower.arenas.team.removewaypoint"));
-                                            return false;
+                                            return true;
                                         }
                                         else if(args[4].equalsIgnoreCase("settroopsend"))
                                         {
                                             //ToDo: Метод установки конца дороги
                                             sender.sendMessage(Configurations.getLocaleString("commands.tower.arenas.team.settroopsend"));
-                                            return false;
+                                            return true;
                                         }
                                         else if(args[4].equalsIgnoreCase("placingmode"))
                                         {
                                             sender.sendMessage(Configurations.getLocaleString("commands.tower.arenas.team.placingmodeon"));
-                                            return false;
+                                            return true;
                                         }
                                         else
                                         {
@@ -303,7 +303,7 @@ public class MainTowersCommand implements CommandExecutor {
                     if(args.length < 2)
                     {
                         printHelp(sender, "arena");
-                        return false;
+                        return true;
                     }
                     else
                     {
@@ -314,13 +314,13 @@ public class MainTowersCommand implements CommandExecutor {
                         arena.saveToConfig();
                         sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.createarena")
                                 .replaceAll("%arena%", arena_name));
-                        return false;
+                        return true;
                     }
                 }
                 else
                 {
                     sender.sendMessage(Configurations.getLocaleString("no-perm"));
-                    return false;
+                    return true;
                 }
             }
             //remove arena (RemoveArena)
@@ -331,7 +331,7 @@ public class MainTowersCommand implements CommandExecutor {
                     if(args.length < 2)
                     {
                         printHelp(sender, "arena");
-                        return false;
+                        return true;
                     }
                     else
                     {
@@ -340,13 +340,13 @@ public class MainTowersCommand implements CommandExecutor {
                         gameArena.saveToConfig();
                         sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.removearena")
                                 .replaceAll("%arena%", arena_name));
-                        return false;
+                        return true;
                     }
                 }
                 else
                 {
                     sender.sendMessage(Configurations.getLocaleString("no-perm"));
-                    return false;
+                    return true;
                 }
             }
             //team list (TeamList)
@@ -357,19 +357,19 @@ public class MainTowersCommand implements CommandExecutor {
                     if(args.length < 2)
                     {
                         printHelp(sender, "arena");
-                        return false;
+                        return true;
                     }
                     else
                     {
                         String arena_name = args[1];
                         //ToDo: метод возвращения списка команд
-                        return false;
+                        return true;
                     }
                 }
                 else
                 {
                     sender.sendMessage(Configurations.getLocaleString("no-perm"));
-                    return false;
+                    return true;
                 }
             }
             //placingmode off
@@ -379,25 +379,25 @@ public class MainTowersCommand implements CommandExecutor {
                 {
                     //ToDo: выключение режима установки блоков
                     sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.placingmodeoff"));
-                    return false;
+                    return true;
                 }
                 else
                 {
                     sender.sendMessage(Configurations.getLocaleString("no-perm"));
-                    return false;
+                    return true;
                 }
             }
             //player help
             else if(args[0].equalsIgnoreCase("player"))
             {
                 printHelp(sender, "player");
-                return false;
+                return true;
             }
             //misc help
             else if(args[0].equalsIgnoreCase("misc"))
             {
                 printHelp(sender, "misc");
-                return false;
+                return true;
             }
             //РАЗНОЕ, reload
             else if(args[0].equalsIgnoreCase("reload"))
@@ -411,7 +411,7 @@ public class MainTowersCommand implements CommandExecutor {
                 else
                 {
                     sender.sendMessage(Configurations.getLocaleString("no-perm"));
-                    return false;
+                    return true;
                 }
             }
             //force start (ForceStart)
@@ -425,7 +425,7 @@ public class MainTowersCommand implements CommandExecutor {
                 else
                 {
                     sender.sendMessage(Configurations.getLocaleString("no-perm"));
-                    return false;
+                    return true;
                 }
             }
             //force join (ForceJoin)
@@ -441,13 +441,13 @@ public class MainTowersCommand implements CommandExecutor {
                     else
                     {
                         printHelp(sender, "misc");
-                        return false;
+                        return true;
                     }
                 }
                 else
                 {
                     sender.sendMessage(Configurations.getLocaleString("no-perm"));
-                    return false;
+                    return true;
                 }
             }
             //stop
@@ -457,12 +457,12 @@ public class MainTowersCommand implements CommandExecutor {
                 {
                     //ToDo: метод остановки игры
                     sender.sendMessage(Configurations.getLocaleString("commands.towers.miscellanea.stop"));
-                    return false;
+                    return true;
                 }
                 else
                 {
                     sender.sendMessage(Configurations.getLocaleString("no-perm"));
-                    return false;
+                    return true;
                 }
             }
             //Игрок, join
@@ -474,12 +474,12 @@ public class MainTowersCommand implements CommandExecutor {
                     PlayerData.add((Player)sender);
                     sender.sendMessage(Configurations.getLocaleString("commands.towers.players.join")
                             .replaceAll("%arena%", arena_name));
-                    return false;
+                    return true;
                 }
                 else
                 {
                     printHelp(sender, "player");
-                    return false;
+                    return true;
                 }
             }
             //leave
@@ -487,7 +487,7 @@ public class MainTowersCommand implements CommandExecutor {
             {
                 PlayerData.remove((Player)sender);
                 sender.sendMessage(Configurations.getLocaleString("commands.towers.players.leave"));
-                return false;
+                return true;
             }
             else
             {
