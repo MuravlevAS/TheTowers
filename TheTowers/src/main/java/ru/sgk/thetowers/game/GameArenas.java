@@ -27,8 +27,6 @@ public class GameArenas
         {
             arenas.add(arena);
             stringList.add(arena.getArenaName());
-            arena.saveToConfig();
-            saveConfig();
             return true;
         }
         return false;
