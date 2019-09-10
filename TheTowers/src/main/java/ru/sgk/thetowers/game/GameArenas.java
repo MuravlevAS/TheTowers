@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import ru.sgk.thetowers.data.Configuration;
+import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.game.data.teams.GameTeam;
 import ru.sgk.thetowers.game.data.teams.GameTeamArea;
 import ru.sgk.thetowers.game.data.teams.GameTeamColor;
@@ -19,11 +20,6 @@ public class GameArenas
     private static FileConfiguration arenasConfig;
     private static List<GameArena> arenas = Lists.newArrayList();
     private static List<String> stringList = Lists.newArrayList();
-    public static List<GameArena> getArenas()
-    {
-        return arenas;
-    }
-
 
     public static boolean addArena(GameArena arena)
     {
@@ -31,6 +27,8 @@ public class GameArenas
         {
             arenas.add(arena);
             stringList.add(arena.getArenaName());
+            arena.saveToConfig();
+            saveConfig();
             return true;
         }
         return false;
@@ -47,12 +45,12 @@ public class GameArenas
     }
 
     /**
-     * Загружает арены из конфига
+     * Загружает арены из файла arenas.yml
      */
     @SuppressWarnings("unchecked")
     public static void loadArenas()
     {
-        arenasConfig = Configuration.loadConfig("arenas.yml");
+        loadConfig();
         ConfigurationSection arenas = arenasConfig.getConfigurationSection("arenas");
         Logs.sendDebugMessage("Loading arenas");
         if (arenas != null)
@@ -76,19 +74,19 @@ public class GameArenas
                             Logs.send("§cCannot load team with name " + team + "! Such team cannot exist!");
                         }
                         if (gTeam == null) continue;
-                        Location min = (Location) teams.get(team + ".min");
-                        Location max = (Location) teams.get(team + ".max");
-                        Location spawn = (Location) teams.get(team + ".spawn");
-                        Location troopsSpawn = (Location) teams.get(team + ".troops-spawn");
-                        Location troopsEnd = (Location) teams.get(team + ".troops-end");
-                        List<Location> troopsWayPoints = (List<Location>) teams.getList(team + ".troops-way-points", null);
-                        List<Block> tmpBlockList = (List<Block>) teams.getList(team + ".tower-blocks", null);
+                        Location min = Configurations.getLocation(arenasConfig, teams.getCurrentPath() + "." + team + ".min");
+                        Location max = Configurations.getLocation(arenasConfig ,teams.getCurrentPath() + "." + team + ".max");
+                        Location spawn = Configurations.getLocation(arenasConfig, teams.getCurrentPath() + "." + team + ".spawn");
+                        Location troopsSpawn = Configurations.getLocation(arenasConfig, teams.getCurrentPath() + "." + team + ".troops-spawn");
+                        Location troopsEnd = Configurations.getLocation(arenasConfig, teams.getCurrentPath() + "." + team + ".troops-end");
+                        List<Location> troopsWayPoints = Configurations.getLocationList(arenasConfig, teams.getCurrentPath() + "." + team + ".troops-way-points");
+                        List<Location> blockLocationList = Configurations.getLocationList(arenasConfig,teams.getCurrentPath() + "." +team + ".tower-blocks");
                         List<Block> towerBlocks = Lists.newArrayList();
 
-                        if (tmpBlockList != null) {
-                            for (Block block : tmpBlockList) {
-                                if (block != null && !block.isEmpty())
-                                    towerBlocks.add(block);
+                        if (blockLocationList != null) {
+                            for (Location blockLocation : blockLocationList) {
+                                if (blockLocation.getBlock() != null && !blockLocation.getBlock().isEmpty())
+                                    towerBlocks.add(blockLocation.getBlock());
                             }
                         }
                         if (!towerBlocks.isEmpty())
@@ -116,10 +114,10 @@ public class GameArenas
                         Logs.sendDebugMessage("Team " + team + " successfully loaded");
                     }
                 }
-                Location lobbyLocation = (Location) arenas.get(name + ".lobby-location");
+                Location lobbyLocation = Configurations.getLocation(arenasConfig, arenas.getCurrentPath() + "." + name + ".lobby-location");
                 if (lobbyLocation != null)
                     arena.setLobbyLocation(lobbyLocation);
-                GameArenas.arenas.add(arena);
+                addArena(arena);
                 Logs.sendDebugMessage("Arena " + arena + " successfully loaded");
             }
         }
@@ -133,7 +131,7 @@ public class GameArenas
         {
             arena.saveToConfig();
         }
-        Configuration.saveConfiguration(arenasConfig, "arenas.yml");
+        saveConfig();
     }
 
     public static List<String> toStringList()
@@ -171,6 +169,10 @@ public class GameArenas
         return null;
     }
 
+    public static List<GameArena> getArenas()
+    {
+        return arenas;
+    }
 
     private static void loadConfig(){
         arenasConfig = Configuration.loadConfig("arenas.yml");

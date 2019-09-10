@@ -1,7 +1,9 @@
 package ru.sgk.thetowers.game;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.game.data.teams.GameTeam;
 import ru.sgk.thetowers.game.data.teams.GameTeamArea;
 
@@ -57,22 +59,25 @@ public class GameArena
             Location troopsSpawn = team.getTroopSpawn();
             Location troopsEnd = team.getTroopsEnd();
             List<Location> troopsWay = team.getTroopWay();
-            List<Block> towerBlocks = team.getTowerBlocks();
+            List<Location> towerBlocks = Lists.newArrayList();
+            for (Block block : team.getTowerBlocks())
+            {
+                towerBlocks.add(block.getLocation());
+            }
             GameTeamArea area = team.getArea();
             Location min = area.getMin();
             Location max = area.getMax();
             Location spawn = area.getSpawnLoc();
 
-            GameArenas.getConfig().set("arenas." + arenaName + ".teams." + teamColor + ".min", min);
-            GameArenas.getConfig().set("arenas." + arenaName + ".teams." + teamColor + ".max", max);
-            GameArenas.getConfig().set("arenas." + arenaName + ".teams." + teamColor + ".spawn", spawn);
-            GameArenas.getConfig().set("arenas." + arenaName + ".teams." + teamColor + ".troops-spawn", troopsSpawn);
-            GameArenas.getConfig().set("arenas." + arenaName + ".teams." + teamColor + ".troops-end", troopsEnd);
-            GameArenas.getConfig().set("arenas." + arenaName + ".teams." + teamColor + ".troops-way-points", troopsWay);
-            GameArenas.getConfig().set("arenas." + arenaName + ".teams." + teamColor + ".troops-spawn", troopsSpawn);
-            GameArenas.getConfig().set("arenas." + arenaName + ".teams." + teamColor + ".tower-blocks", towerBlocks);
+            Configurations.saveLocationAsString (GameArenas.getConfig(), "arenas." + arenaName + ".teams." + teamColor + ".min", min);
+            Configurations.saveLocationAsString (GameArenas.getConfig(), "arenas." + arenaName + ".teams." + teamColor + ".max", max);
+            Configurations.saveLocationAsString (GameArenas.getConfig(), "arenas." + arenaName + ".teams." + teamColor + ".spawn", spawn);
+            Configurations.saveLocationAsString (GameArenas.getConfig(), "arenas." + arenaName + ".teams." + teamColor + ".troops-spawn", troopsSpawn);
+            Configurations.saveLocationAsString (GameArenas.getConfig(), "arenas." + arenaName + ".teams." + teamColor + ".troops-end", troopsEnd);
+            Configurations.saveLocationAsString (GameArenas.getConfig(), "arenas." + arenaName + ".teams." + teamColor + ".troops-spawn", troopsSpawn);
+            Configurations.saveLocationList     (GameArenas.getConfig(), "arenas." + arenaName + ".teams." + teamColor + ".troops-way-points", troopsWay);
+            Configurations.saveLocationList     (GameArenas.getConfig(), "arenas." + arenaName + ".teams." + teamColor + ".tower-blocks", towerBlocks);
         }
-        GameArenas.saveConfig();
     }
 
 
