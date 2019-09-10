@@ -126,6 +126,7 @@ public class MainTowersCommand implements CommandExecutor {
                     {
                         troop.move(player.getLocation());
                     }
+                    return true;
                 }
             }
             if (args.length == 2)
@@ -148,6 +149,7 @@ public class MainTowersCommand implements CommandExecutor {
                         sender.sendMessage("§cВозникла ошибка. Проверьте правильность написание типа моба");
                         t.printStackTrace();
                     }
+                    return true;
                 }
 
             }
@@ -412,26 +414,12 @@ public class MainTowersCommand implements CommandExecutor {
                     return false;
                 }
             }
-            //quick start (QuickStart)
-            else if(args[0].equalsIgnoreCase("quickstart"))
-            {
-                if(hasPermission(sender, "towers.misc.quickstart"))
-                {
-                    //ToDo: метод быстрого запуска
-                    sender.sendMessage(Configurations.getLocaleString("commands.towers.miscellanea.quickstart"));
-                }
-                else
-                {
-                    sender.sendMessage(Configurations.getLocaleString("no-perm"));
-                    return false;
-                }
-            }
             //force start (ForceStart)
-            else if(args[0].equalsIgnoreCase("forcestart"))
+            else if(args[0].equalsIgnoreCase("start"))
             {
                 if(hasPermission(sender, "towers.misc.forcestart"))
                 {
-                    //ToDo: метод быстрого запуска №2
+                    //ToDo: метод быстрого запуска
                     sender.sendMessage(Configurations.getLocaleString("commands.towers.miscellanea.forcestart"));
                 }
                 else
