@@ -1,16 +1,23 @@
 package ru.sgk.thetowers.commands;
 
 import com.google.common.collect.Lists;
+import com.sk89q.worldedit.IncompleteRegionException;
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.internal.annotation.Selection;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.Region;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import ru.sgk.thetowers.MainTowers;
 import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.game.GameArena;
 import ru.sgk.thetowers.game.GameArenas;
 import ru.sgk.thetowers.game.data.PlayerData;
 import ru.sgk.thetowers.game.data.teams.GameTeam;
+import ru.sgk.thetowers.game.data.teams.GameTeamArea;
 import ru.sgk.thetowers.game.data.teams.GameTeamColor;
 import ru.sgk.thetowers.game.data.troops.AbstractTroop;
 
@@ -139,9 +146,9 @@ public class MainTowersCommand implements CommandExecutor {
                     sender.sendMessage("type - " + troopType);
                     try {
 
-                        Constructor<?> troopConstructor = Class.forName("ru.sgk.thetowers.game.data.troops.Troop" +troopType).getDeclaredConstructor();
+                        Constructor<?> troopConstructor = Class.forName("ru.sgk.thetowers.game.data.troops.Troop" +troopType).getDeclaredConstructor(GameTeam.class);
 
-                        AbstractTroop troop = (AbstractTroop) troopConstructor.newInstance();
+                        AbstractTroop troop = (AbstractTroop) troopConstructor.newInstance(new GameTeam(GameTeamColor.WHITE));
                         troops.add(troop);
                         troop.spawn(player.getLocation());
                     }
@@ -207,10 +214,32 @@ public class MainTowersCommand implements CommandExecutor {
                                 if(args[2].equalsIgnoreCase("createteam"))
                                 {
                                     String color = args[3];
-                                    GameArena gameArena = GameArenas.getArena(arena);
-                                    gameArena.addTeam(new GameTeam(GameTeamColor.WHITE));
-                                    gameArena.saveToConfig();
-                                    sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.create"));
+
+                                    LocalSession session = MainTowers.getInstance().getWorldEdit().getSession(player);
+                                    try {
+                                        BlockVector3 blockVectorMin = session.getSelection(session.getSelectionWorld()).getMinimumPoint();
+                                        BlockVector3 blockVectorMax = session.getSelection(session.getSelectionWorld()).getMaximumPoint();
+                                        Location locMin = new Location(player.getWorld(), blockVectorMin.getX(), blockVectorMin.getY(), blockVectorMin.getZ());
+                                        Location locMax = new Location(player.getWorld(), blockVectorMax.getX(), blockVectorMax.getY(), blockVectorMax.getZ());
+
+                                        GameArena gameArena = GameArenas.getArena(arena);
+
+                                        GameTeam team = new GameTeam(GameTeamColor.WHITE);
+
+                                        GameTeamArea area = new GameTeamArea(locMin, locMax, player.getLocation());
+                                        team.setArea(area);
+
+                                        gameArena.addTeam(team);
+                                        GameArenas.addArena(gameArena);
+
+                                        gameArena.saveToConfig();
+                                        GameArenas.saveConfig();
+                                        sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.create"));
+                                    } catch (IncompleteRegionException e) {
+                                        sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.not-team-selection"));
+                                    }
+
+
                                     return true;
                                 }
                                 else if(args[2].equalsIgnoreCase("removeteam"))
@@ -340,6 +369,7 @@ public class MainTowersCommand implements CommandExecutor {
                         String arena_name = args[1];
                         GameArena gameArena = GameArenas.removeArena(arena_name);
                         gameArena.saveToConfig();
+                        GameArenas.saveConfig();
                         sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.removearena")
                                 .replaceAll("%arena%", arena_name));
                         return true;
