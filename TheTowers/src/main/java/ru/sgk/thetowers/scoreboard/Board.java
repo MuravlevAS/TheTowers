@@ -44,7 +44,7 @@ public class Board implements Runnable
 	@Override
 	public void run() 
 	{
-		PlayerData.getOnlinePlayers().stream().forEach((PlayerData p) ->
+		PlayerData.getDataList().stream().forEach((PlayerData p) ->
 		//for (PlayerData p : PlayerData.getOnlinePlayers())
 		{
 			lines.forEach((s, i) -> 

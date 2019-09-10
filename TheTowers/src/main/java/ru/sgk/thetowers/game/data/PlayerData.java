@@ -12,7 +12,7 @@ public class PlayerData
 {
 	private double castleHealth;
 	private Player player;
-	private static List<PlayerData> onlinePlayers = Collections.synchronizedList( new ArrayList<>());
+	private static List<PlayerData> dataList = Collections.synchronizedList( new ArrayList<>());
 	private SimpleScoreboard customBoard = null;
 	private boolean wasFlying;
 	
@@ -41,8 +41,8 @@ public class PlayerData
 	/**
 	 * @return the onlinePlayers
 	 */
-	public static List<PlayerData> getOnlinePlayers() {
-		return onlinePlayers;
+	public static List<PlayerData> getDataList() {
+		return dataList;
 	}
 
 	/**
@@ -72,18 +72,19 @@ public class PlayerData
 	}
 	public static void add(Player player)
 	{
-		for (PlayerData data : onlinePlayers)
+		for (PlayerData data : dataList)
 		{
 			if (data.getPlayer().equals(player))
 			{
 				return;
 			}
 		}
-		onlinePlayers.add(new PlayerData(player));
+		dataList.add(new PlayerData(player));
 	}
+
 	public static void remove(Player player)
 	{
-		onlinePlayers.removeIf((data) -> data.getPlayer().equals(player));
+		dataList.removeIf((data) -> data.getPlayer().equals(player));
 	}
 
 	public boolean wasFlying()
