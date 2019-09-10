@@ -68,6 +68,7 @@ commands:
         removewaypoint: '%prefix% &aКоманде &3%team% &aуспешно убран поворот мобов на координатах &3%loc% &aна арене &3%arena%&a!'
         settroopsend: '%prefix% &aКоманде &3%team% &aуспешно установлена конечная зона на арене &3%arena%&a!'
         placingmodeon: '%prefix% &aКоманде &3%team% &aуспешно добавлен блок для установки башни на координатах &3%loc% &aна арене &3%arena%&a!'
+        not-team-selection: '&cНе выделен регион!'
       createarena: '%prefix% &aАрена &3%arena% &aуспешно создана!'
       removearena: '%prefix% &aАрена &3%arena% &aуспешно удалена!'
       placingmodeoff: '%prefix% &aРежим установки блоков для башен выключен!'
