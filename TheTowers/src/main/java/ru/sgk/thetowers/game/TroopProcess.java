@@ -32,11 +32,8 @@ public class TroopProcess
         for (AbstractTroop troop : troops)
         {
             troop.update();
-            if (troop.isKilled())
-            {
-                // TODO: Отправка тиме статуса о том, что моб умер.
+            if (troop.isKilled() || troop.isDespawned())
                 remove(troop);
-            }
         }
         removeAll();
     }
