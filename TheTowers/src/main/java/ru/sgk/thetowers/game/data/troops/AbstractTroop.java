@@ -68,7 +68,6 @@ public abstract class AbstractTroop
 			catch (Exception e) {}
 			entity.setHealth(health);
 
-			entity.setCustomNameVisible(false);
 			entity.setRemoveWhenFarAway(false);
 
 			if (entity instanceof Zombie)
