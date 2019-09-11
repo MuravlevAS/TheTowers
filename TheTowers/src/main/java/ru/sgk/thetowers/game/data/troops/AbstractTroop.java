@@ -41,11 +41,13 @@ public abstract class AbstractTroop
 	private int currentWayPoint;
     private Location movingTo;
     private GameTeam parentTeam;
+	private boolean despawned;
 
 	public AbstractTroop(GameTeam parentTeam)
     {
         this.parentTeam = parentTeam;
 		currentWayPoint = 0;
+		despawned = false;
 	}
 
 	public void spawn() throws NullPointerException
@@ -90,8 +92,10 @@ public abstract class AbstractTroop
 	}
 
 	public void despawn(){
-		if (entity != null)
+		if (entity != null) {
 			entity.remove();
+			despawned = true;
+		}
 	}
 
 	public void kill(){
@@ -161,7 +165,8 @@ public abstract class AbstractTroop
 	public void endMoving()
     {
         parentTeam.sendDamage(this);
-        kill();
+//        kill();
+        despawn();
         // todo: end of moving
     }
 
@@ -250,7 +255,13 @@ public abstract class AbstractTroop
 
 	}
 
+	public boolean isDespawned() {
+		return despawned;
+	}
 
+	public void setDespawned(boolean despawned) {
+		this.despawned = despawned;
+	}
 
 	public boolean isKilled() {
 		return isKilled;
