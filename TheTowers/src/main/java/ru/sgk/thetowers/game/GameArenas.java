@@ -116,7 +116,7 @@ public class GameArenas
                 if (lobbyLocation != null)
                     arena.setLobbyLocation(lobbyLocation);
                 addArena(arena);
-                Logs.sendDebugMessage("Arena " + arena + " successfully loaded");
+                Logs.sendDebugMessage("Arena " + name + " successfully loaded");
             }
         }
     }
