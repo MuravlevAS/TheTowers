@@ -195,12 +195,96 @@ public class MainTowersCommand implements CommandExecutor {
                     else if(hasPermission(sender, "towers.arena.setlobby"))
                     {
                         String arena = args[1];
+
+                        GameArena gameArena = GameArenas.getArena(arena);
+                        if (gameArena == null){
+                            sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.such-arena-is-not-exist")
+                                    .replaceAll("%arena%", arena));
+                            return true;
+                        }
                         if(args[2].equalsIgnoreCase("setlobby"))
                         {
 
-                            GameArena gameArena = GameArenas.getArena(arena);
-                            gameArena.setLobbyLocation(((Player) sender).getLocation());
+                            gameArena.setLobbyLocation(player.getLocation());
                             sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.setlobby"));
+                            return true;
+                        }
+                        else if(args[2].equalsIgnoreCase("createteam"))
+                        {
+                            String color = null;
+                            if (args.length == 4)
+                                color = args[3];
+
+                            LocalSession session = MainTowers.getInstance().getWorldEdit().getSession(player);
+                            try {
+                                BlockVector3 blockVectorMin = session.getSelection(session.getSelectionWorld()).getMinimumPoint();
+                                BlockVector3 blockVectorMax = session.getSelection(session.getSelectionWorld()).getMaximumPoint();
+                                Location locMin = new Location(player.getWorld(), blockVectorMin.getX(), blockVectorMin.getY(), blockVectorMin.getZ());
+                                Location locMax = new Location(player.getWorld(), blockVectorMax.getX(), blockVectorMax.getY(), blockVectorMax.getZ());
+
+                                GameTeamColor teamColor = null;
+
+                                if (color == null)
+                                {
+                                    for (GameTeamColor tColor : GameTeamColor.values())
+                                    {
+                                        for (GameTeam t : gameArena.getTeams())
+                                        {
+                                            teamColor = tColor;
+                                            if (tColor.equals(t.getColor()));
+                                            {
+                                                teamColor = null;
+                                                break;
+                                            }
+                                        }
+                                        if (teamColor != null) break;
+                                    }
+                                    if (teamColor == null)
+                                    {
+                                        sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.arena-is-full-of-teams"));
+                                        return true;
+                                    }
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        teamColor = GameTeamColor.valueOf(color);
+                                    }
+                                    catch (IllegalArgumentException e)
+                                    {
+                                        sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.incorrect-team-color"));
+                                        return true;
+                                    }
+                                    for (GameTeam t : gameArena.getTeams())
+                                    {
+                                        if (t.getColor().equals(teamColor))
+                                        {
+                                            sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.such-team-already-exist"));
+                                            return true;
+                                        }
+                                    }
+                                }
+
+
+                                GameTeam team = new GameTeam(teamColor);
+
+                                GameTeamArea area = new GameTeamArea(locMin, locMax, player.getLocation());
+                                team.setArea(area);
+
+                                gameArena.addTeam(team);
+                                GameArenas.addArena(gameArena);
+
+                                gameArena.saveToConfig();
+                                GameArenas.saveConfig();
+                                sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.create")
+                                .replaceAll("%arena%", arena)
+                                .replaceAll("%team%", teamColor.toString()));
+                            } catch (IncompleteRegionException e) {
+                                sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.not-team-selection"));
+                            }
+
+
                             return true;
                         }
                         else
@@ -211,38 +295,7 @@ public class MainTowersCommand implements CommandExecutor {
                             }
                             else
                             {
-                                if(args[2].equalsIgnoreCase("createteam"))
-                                {
-                                    String color = args[3];
-
-                                    LocalSession session = MainTowers.getInstance().getWorldEdit().getSession(player);
-                                    try {
-                                        BlockVector3 blockVectorMin = session.getSelection(session.getSelectionWorld()).getMinimumPoint();
-                                        BlockVector3 blockVectorMax = session.getSelection(session.getSelectionWorld()).getMaximumPoint();
-                                        Location locMin = new Location(player.getWorld(), blockVectorMin.getX(), blockVectorMin.getY(), blockVectorMin.getZ());
-                                        Location locMax = new Location(player.getWorld(), blockVectorMax.getX(), blockVectorMax.getY(), blockVectorMax.getZ());
-
-                                        GameArena gameArena = GameArenas.getArena(arena);
-
-                                        GameTeam team = new GameTeam(GameTeamColor.WHITE);
-
-                                        GameTeamArea area = new GameTeamArea(locMin, locMax, player.getLocation());
-                                        team.setArea(area);
-
-                                        gameArena.addTeam(team);
-                                        GameArenas.addArena(gameArena);
-
-                                        gameArena.saveToConfig();
-                                        GameArenas.saveConfig();
-                                        sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.create"));
-                                    } catch (IncompleteRegionException e) {
-                                        sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.not-team-selection"));
-                                    }
-
-
-                                    return true;
-                                }
-                                else if(args[2].equalsIgnoreCase("removeteam"))
+                                if(args[2].equalsIgnoreCase("removeteam"))
                                 {
                                     String color = args[3];
                                     //ToDo: Метод удаления команды
@@ -252,7 +305,6 @@ public class MainTowersCommand implements CommandExecutor {
                                 else if(args[2].equalsIgnoreCase("setteamsize"))
                                 {
                                     int size = Integer.parseInt(args[3]);
-                                    GameArena gameArena = GameArenas.getArena(arena);
                                     gameArena.setTeamSize(size);
                                     gameArena.saveToConfig();
                                     GameArenas.saveConfig();
@@ -276,14 +328,14 @@ public class MainTowersCommand implements CommandExecutor {
                                         }
                                         else if(args[4].equalsIgnoreCase("settroopsspawn"))
                                         {
-                                            Location location = ((Player) sender).getLocation();
+                                            Location location = player.getLocation();
                                             //ToDo: Метод установки спавна мобов
                                             sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.settroopsspawn"));
                                             return true;
                                         }
                                         else if(args[4].equalsIgnoreCase("addwaypoint"))
                                         {
-                                            Location location = ((Player) sender).getLocation();
+                                            Location location = player.getLocation();
                                             //ToDo: Метод добавления поворота
                                             sender.sendMessage(Configurations.getLocaleString("commands.towers.arenas.team.addwaypoint"));
                                             return true;
@@ -503,7 +555,7 @@ public class MainTowersCommand implements CommandExecutor {
                 if(args.length == 2)
                 {
                     String arena_name = args[1];
-                    PlayerData.add((Player)sender);
+                    PlayerData.add(player);
                     sender.sendMessage(Configurations.getLocaleString("commands.towers.players.join")
                             .replaceAll("%arena%", arena_name));
                     return true;
@@ -517,7 +569,7 @@ public class MainTowersCommand implements CommandExecutor {
             //leave
             else if(args[0].equalsIgnoreCase("leave"))
             {
-                PlayerData.remove((Player)sender);
+                PlayerData.remove(player);
                 sender.sendMessage(Configurations.getLocaleString("commands.towers.players.leave"));
                 return true;
             }
