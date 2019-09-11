@@ -1,14 +1,18 @@
 package ru.sgk.thetowers.game.data.troops;
 
 import com.google.common.collect.Lists;
-import net.minecraft.server.v1_14_R1.*;
+import net.minecraft.server.v1_14_R1.EntityInsentient;
+import net.minecraft.server.v1_14_R1.PathEntity;
+import net.minecraft.server.v1_14_R1.PathfinderGoal;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
 import ru.sgk.thetowers.game.data.teams.GameTeam;
 import ru.sgk.thetowers.utils.CustomPathfinder;
 
@@ -44,19 +48,30 @@ public abstract class AbstractTroop
 		currentWayPoint = 0;
 	}
 
-	public void spawn() throws NullPointerException {
+	public void spawn() throws NullPointerException
+	{
 		if (entity == null)
 		{
 			entity = (LivingEntity) Objects.requireNonNull(spawnLocation.getWorld()).spawnEntity(spawnLocation, mobType);
 
+            entity.setCustomName(ChatColor.UNDERLINE + "");
+
 			entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(speed);
 			entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+			try
+			{
+				entity.getEquipment().clear();
+				entity.getEquipment().setHelmet(new ItemStack(Material.STONE_BUTTON));
+			}
+			catch (Exception e) {}
 			entity.setHealth(health);
-			try {
-				((EntityInsentient) ((CraftEntity) entity).getHandle()).setSlot(EnumItemSlot.HEAD, new ItemStack(Blocks.STONE_BUTTON));
 
-			} catch (Exception e) {
-				e.printStackTrace();
+			entity.setCustomNameVisible(false);
+			entity.setRemoveWhenFarAway(false);
+
+			if (entity instanceof Zombie)
+			{
+				((Zombie) entity).setBaby(false);
 			}
 
 			try {
@@ -100,7 +115,7 @@ public abstract class AbstractTroop
 	{
         EntityInsentient insentient = ((EntityInsentient)((CraftEntity)entity).getHandle());
         PathEntity pathEntity = insentient.getNavigation().a(loc.getBlockX(), loc.getBlockX(), loc.getBlockX(),0);
-        insentient.getNavigation().a(pathEntity, 1D);
+//        insentient.getNavigation().a(pathEntity, 1D);
         insentient.targetSelector.a(PathfinderGoal.Type.MOVE);
 
         PathfinderGoal pathfinder = new CustomPathfinder(insentient, loc, 1D);
