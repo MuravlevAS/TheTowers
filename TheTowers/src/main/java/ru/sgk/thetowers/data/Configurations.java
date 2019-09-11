@@ -19,18 +19,24 @@ public class Configurations {
 
 	private static Location stringToLoc(String s)
 	{
-		String[] locationFields = s.split(",");
+		try
+		{
+			String[] locationFields = s.split(",");
 
-		World world = Bukkit.getWorld(locationFields[0].replaceAll(" ", ""));
+			World world = Bukkit.getWorld(locationFields[0].replaceAll(" ", ""));
 
-		double x = Double.parseDouble(locationFields[1].replaceAll(" ", ""));
-		double y = Double.parseDouble(locationFields[2].replaceAll(" ", ""));
-		double z = Double.parseDouble(locationFields[3].replaceAll(" ", ""));
+			double x = Double.parseDouble(locationFields[1].replaceAll(" ", ""));
+			double y = Double.parseDouble(locationFields[2].replaceAll(" ", ""));
+			double z = Double.parseDouble(locationFields[3].replaceAll(" ", ""));
 
-		return new Location(world, x, y, z);
+			return new Location(world, x, y, z);
+		}
+		catch(Exception e){ }
+		return null;
 	}
 	private static String locToString(Location loc)
 	{
+		if (loc == null) return null;
 		World world = loc.getWorld();
 		String worldString = world.getName();
 		double x = loc.getX();
