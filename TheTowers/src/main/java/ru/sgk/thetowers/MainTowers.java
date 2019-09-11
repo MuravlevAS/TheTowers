@@ -50,7 +50,7 @@ public class MainTowers extends JavaPlugin
 
 		Logs.send("Loading locales");
 		Configurations.loadLocale(Configurations.getConfig().getString("lang"));
-		Logs.send("§aLocaless has loaded");
+		Logs.send("§aLocales has loaded");
 
 		Logs.send("Loading settings");
 		Configurations.loadSettings();
