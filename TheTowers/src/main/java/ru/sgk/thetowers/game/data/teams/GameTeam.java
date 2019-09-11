@@ -1,5 +1,6 @@
 package ru.sgk.thetowers.game.data.teams;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -27,9 +28,11 @@ public class GameTeam
     public GameTeam(GameTeamColor color) {
         this.color = color;
         this.coins = 0;
-        this.placedTowers = new ArrayList<>();
-        this.troopWay = new ArrayList<>();
+        this.placedTowers = Lists.newArrayList();
+        this.troopWay = Lists.newArrayList();
         this.teamArea = null;
+        this.towerBlocks = Lists.newArrayList();
+        this.players = Lists.newArrayList();
     }
 
     public GameTeam(GameTeamColor color, GameTeamArea area){
