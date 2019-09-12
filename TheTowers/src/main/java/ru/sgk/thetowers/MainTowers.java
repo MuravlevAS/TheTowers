@@ -1,12 +1,13 @@
 package ru.sgk.thetowers;
 
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+
 import ru.sgk.thetowers.commands.MainTowersCommand;
 import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.game.GameArenas;
