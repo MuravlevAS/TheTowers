@@ -9,7 +9,6 @@ import org.bukkit.Location;
 public class CustomPathfinder extends PathfinderGoal {
 
     private double speed;
-    private Navigation navigation;
     private Location loc;
     private EntityInsentient entity;
 
