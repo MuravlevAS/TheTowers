@@ -19,10 +19,18 @@ import ru.sgk.thetowers.utils.Logs;
 
 public class GameArenas
 {
+	/** Файл конфигурации арен. */
     private static FileConfiguration arenasConfig;
+    /** Список зарегестрированных арен. */
     private static List<GameArena> arenas = Lists.newArrayList();
+    /** Список зарегестрированных арен в строковом виде. */
     private static List<String> stringList = Lists.newArrayList();
 
+    /**
+     * Добавляет арену в список 
+     * @param arena - арена, которую нужно добавить 
+     * @return true, если арена была добавлена, в противном случае false
+     */
     public static boolean addArena(GameArena arena)
     {
         if (!arenas.contains(arena))
@@ -34,6 +42,9 @@ public class GameArenas
         return false;
     }
 
+    /**
+     * @return Арену соответствующую имени name; null, если такой арены нет.
+     */
     public static GameArena getArena(String name)
     {
         for (GameArena arena : arenas) {
@@ -49,16 +60,19 @@ public class GameArenas
      */
     public static void loadArenas()
     {
+    	// Загружаем конфиг
         loadConfig();
+        // Получаем секцию в конфиге с аренами
         ConfigurationSection arenas = arenasConfig.getConfigurationSection("arenas");
         Logs.sendDebugMessage("Loading arenas");
         if (arenas != null)
         {
+        	// Проходимся по аренам из конфига
             for (String name : arenas.getKeys(false))
             {
-
                 Logs.sendDebugMessage("Loading arena " + name);
-                GameArena arena = new GameArena(name);
+                GameArena arena = createArena(name);
+                // Получаем из конфиге список команд в арене.
                 ConfigurationSection teams = arenas.getConfigurationSection(name + ".teams");
                 if (teams != null)
                 {
@@ -67,12 +81,16 @@ public class GameArenas
                     {
                         Logs.sendDebugMessage("Loading team " + team);
                         GameTeam gTeam = null;
-                        try {
+                        try 
+                        {
                             gTeam = new GameTeam(GameTeamColor.valueOf(team));
-                        } catch (IllegalArgumentException e) {
-                            Logs.send("§cCannot load team with name " + team + "! Such team cannot exist!");
                         }
-                        if (gTeam == null) continue;
+                        catch (IllegalArgumentException e) 
+                        {
+                            Logs.send("§cCannot load team with name " + team + "! Such team cannot exist!");
+                            continue;
+                        }
+                        // Получаем все значения команды из конфига
                         Location min = Configurations.getLocation(arenasConfig, teams.getCurrentPath() + "." + team + ".min");
                         Location max = Configurations.getLocation(arenasConfig ,teams.getCurrentPath() + "." + team + ".max");
                         Location spawn = Configurations.getLocation(arenasConfig, teams.getCurrentPath() + "." + team + ".spawn");
@@ -81,17 +99,20 @@ public class GameArenas
                         List<Location> troopsWayPoints = Configurations.getLocationList(arenasConfig, teams.getCurrentPath() + "." + team + ".troops-way-points");
                         List<Location> blockLocationList = Configurations.getLocationList(arenasConfig,teams.getCurrentPath() + "." +team + ".tower-blocks");
                         List<Block> towerBlocks = Lists.newArrayList();
-
+                        // Преобразуем локации в блоки.
                         if (blockLocationList != null) {
                             for (Location blockLocation : blockLocationList) {
+                            	// Если блок есть, добавляем его в список 
                                 if (blockLocation.getBlock() != null && !blockLocation.getBlock().isEmpty())
                                     towerBlocks.add(blockLocation.getBlock());
                             }
                         }
+                        
                         if (!towerBlocks.isEmpty())
                             gTeam.setTowerBlocks(towerBlocks);
-
+                        // Получаем область команды.
                         GameTeamArea area;
+                        // Если координаты не равны null, создаем область.
                         if (min != null && max != null) {
                             if (spawn == null)
                                 area = new GameTeamArea(min, max);
@@ -99,7 +120,7 @@ public class GameArenas
                                 area = new GameTeamArea(min, max, spawn);
                             gTeam.setArea(area);
                         }
-
+                        
                         if (troopsSpawn != null)
                             gTeam.setTroopSpawn(troopsSpawn);
 
@@ -108,28 +129,35 @@ public class GameArenas
                         }
                         if (troopsWayPoints != null)
                             gTeam.setTroopWay(troopsWayPoints);
+                        
                         arena.addTeam(gTeam);
 
                         Logs.sendDebugMessage("Team " + team + " successfully loaded");
                     }
                 }
+                // Устанавливаем локацию лобби из конфига в арену. 
                 Location lobbyLocation = Configurations.getLocation(arenasConfig, arenas.getCurrentPath() + "." + name + ".lobby-location");
                 if (lobbyLocation != null)
                     arena.setLobbyLocation(lobbyLocation);
-                addArena(arena);
+                
                 Logs.sendDebugMessage("Arena " + name + " successfully loaded");
             }
         }
     }
-
+    /** 
+     * Сохраняет все арены в конфиг.
+     */
     public static void saveArenas()
     {
+    	// Если конфиг равен null, создаём новый.
         if (arenasConfig == null)
              arenasConfig = Configuration.loadConfig("arenas.yml");
+        
         for (GameArena arena : GameArenas.arenas)
         {
             arena.saveToConfig();
         }
+        // Сохраняем конфиг.
         saveConfig();
     }
 
@@ -147,6 +175,7 @@ public class GameArenas
     public static GameArena createArena(String name)
     {
         GameArena arena = new GameArena(name);
+        // Если арена уже существует, возвращаем арену из списка.
         if (addArena(arena))
             return new GameArena(name);
         return getArena(name);
@@ -172,11 +201,16 @@ public class GameArenas
     {
         return arenas;
     }
-
+    /**
+     * Загружаем конфиг с аренами
+     */
     private static void loadConfig(){
         arenasConfig = Configuration.loadConfig("arenas.yml");
     }
-
+    
+    /**
+     * @return Объект FileConfiguration, соответствующий файлу arenas.yml 
+     */
     public static FileConfiguration getConfig()
     {
         if (arenasConfig == null) loadConfig();
@@ -187,7 +221,9 @@ public class GameArenas
     {
         loadConfig();
     }
-
+    /**
+     * Сохраняет файл конфигурации arenas.yml
+     */
     public static void saveConfig()
     {
         if (arenasConfig != null)
