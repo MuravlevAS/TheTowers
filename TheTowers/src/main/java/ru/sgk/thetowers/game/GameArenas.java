@@ -1,18 +1,20 @@
 package ru.sgk.thetowers.game;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+
+import com.google.common.collect.Lists;
+
 import ru.sgk.thetowers.data.Configuration;
 import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.game.data.teams.GameTeam;
 import ru.sgk.thetowers.game.data.teams.GameTeamArea;
 import ru.sgk.thetowers.game.data.teams.GameTeamColor;
 import ru.sgk.thetowers.utils.Logs;
-
-import java.util.List;
 
 
 public class GameArenas
@@ -45,7 +47,6 @@ public class GameArenas
     /**
      * Загружает арены из файла arenas.yml
      */
-    @SuppressWarnings("unchecked")
     public static void loadArenas()
     {
         loadConfig();

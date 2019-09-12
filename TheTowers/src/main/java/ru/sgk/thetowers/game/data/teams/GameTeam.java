@@ -1,16 +1,17 @@
 package ru.sgk.thetowers.game.data.teams;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
+import com.google.common.collect.Lists;
+
 import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.game.TroopProcess;
 import ru.sgk.thetowers.game.data.towers.AbstractTower;
 import ru.sgk.thetowers.game.data.troops.AbstractTroop;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameTeam
 {
@@ -56,6 +57,11 @@ public class GameTeam
         troop.setEndLocation(troopsEnd);
 
         TroopProcess.add(troop, this);
+    }
+    
+    public double getHealth()
+    {
+    	return health;
     }
 
     public void sendDamage(AbstractTroop damager)
@@ -154,9 +160,10 @@ public class GameTeam
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
+        if (obj == null || this == null) return false;
 
-        if (obj == null && getClass() != obj.getClass()) return false;
+        if (obj.getClass() != this.getClass()) return false;
+        
         GameTeam team = (GameTeam) obj;
 
         return team.color.equals(color);

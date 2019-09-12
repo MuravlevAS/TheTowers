@@ -1,16 +1,19 @@
 package ru.sgk.thetowers.commands;
 
-import com.google.common.collect.Lists;
-import com.sk89q.worldedit.IncompleteRegionException;
-import com.sk89q.worldedit.LocalSession;
-import com.sk89q.worldedit.internal.annotation.Selection;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.regions.Region;
+import java.lang.reflect.Constructor;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import com.google.common.collect.Lists;
+import com.sk89q.worldedit.IncompleteRegionException;
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.math.BlockVector3;
+
 import ru.sgk.thetowers.MainTowers;
 import ru.sgk.thetowers.data.Configurations;
 import ru.sgk.thetowers.game.GameArena;
@@ -20,9 +23,6 @@ import ru.sgk.thetowers.game.data.teams.GameTeam;
 import ru.sgk.thetowers.game.data.teams.GameTeamArea;
 import ru.sgk.thetowers.game.data.teams.GameTeamColor;
 import ru.sgk.thetowers.game.data.troops.AbstractTroop;
-
-import java.lang.reflect.Constructor;
-import java.util.List;
 
 
 public class MainTowersCommand implements CommandExecutor {

@@ -1,15 +1,16 @@
 package ru.sgk.thetowers.data;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
-import ru.sgk.thetowers.utils.Logs;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.collect.Lists;
+
+import ru.sgk.thetowers.utils.Logs;
 
 public class Configurations {
 	private static FileConfiguration config = null;
@@ -59,7 +60,7 @@ public class Configurations {
 	{
 		if (!config.contains(path)) return null;
 		String s = config.getString(path);
-		return stringToLoc(config.getString(path));
+		return stringToLoc(s);
 	}
 	public static List<Location> getLocationList(FileConfiguration config, String path)
 	{
