@@ -56,7 +56,7 @@ public class GameTeam
         troopWay.forEach(troop::addWayPoint);
         troop.setEndLocation(troopsEnd);
 
-        TroopProcess.add(troop, this);
+        TroopProcess.add(troop);
     }
     
     public double getHealth()
@@ -77,8 +77,8 @@ public class GameTeam
                 t.setSpawnLocation(teamToSend.troopSpawn);
                 teamToSend.troopWay.forEach(t::addWayPoint);
                 t.setEndLocation(teamToSend.troopsEnd);
-
-                TroopProcess.add(t, teamToSend);
+                t.setParentTeam(teamToSend);
+                TroopProcess.add(t);
                 sender.sendMessage(Configurations.getLocaleString("troop-sended").replaceAll("%team%", teamToSend.toString()));
             }
 
