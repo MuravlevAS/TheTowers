@@ -228,10 +228,10 @@ public class MainTowersCommand implements CommandExecutor {
                                 {
                                     for (GameTeamColor tColor : GameTeamColor.values())
                                     {
+                                    	teamColor = tColor;
                                         for (GameTeam t : gameArena.getTeams())
                                         {
-                                            teamColor = tColor;
-                                            if (tColor.equals(t.getColor()));
+                                            if (teamColor.equals(t.getColor()));
                                             {
                                                 teamColor = null;
                                                 break;
@@ -489,7 +489,7 @@ public class MainTowersCommand implements CommandExecutor {
                 if(hasPermission(sender, "towers.misc.reload"))
                 {
                     Configurations.relaodConfig();
-                    Configurations.relaodSettings();
+                    Configurations.loadSettings();
                     sender.sendMessage(Configurations.getLocaleString("commands.towers.miscellanea.reload"));
                 }
                 else
