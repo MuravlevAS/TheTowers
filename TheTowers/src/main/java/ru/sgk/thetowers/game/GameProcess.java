@@ -23,6 +23,10 @@ public class GameProcess {
 	private boolean started;
 	/** Время (в мс), после истечения которого начинается игра. */
 	private int startedTime;
+	
+	/**
+	 * Создаёт игровой процесс относящийся к арене <i>arena</i>
+	 */
 	public GameProcess(String arena)
 	{
 		this.arena = GameArenas.getArena(arena);
