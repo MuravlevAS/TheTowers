@@ -22,24 +22,54 @@ import ru.sgk.thetowers.utils.Logs;
  */
 public class MainTowers extends JavaPlugin
 {
-	public static WorldEditPlugin wePlugin = null;
+	private static WorldEditPlugin wePlugin = null;
 	private static MainTowers instance;
+	
 	public void onEnable()
 	{
 		Logs.send("Enabling plugin...");
+		
+		// make instance of this class.
 		instance = this;
+		
+		if (getWorldEdit() == null)
+		{
+			Logs.send("§cCannot find WorldEdit. Please make sure this plugin is installed.");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
+		
+		// registering commands.
+		getServer().getPluginCommand("towers").setExecutor(new MainTowersCommand());
+		
+		// loading yml files, players. Initialization of scoreboard
 		loadAll();
+
+		// registering events
+		getServer().getPluginManager().registerEvents(new MainEvents(), this);
+		
 		Logs.send("§aPlugin has enabled.");
 	}
 	
 	public void onDisable()
 	{
-		
 		Logs.sendDebugMessage("Disabling plugin...");
-		Logs.send("§aPlugin has disabled.");
-//		GameArenas.saveArenas();
+		Logs.send("Plugin has disabled.");
+		// TODO: остановка запущенных игр.
 	}
-
+	/**
+	 * Перезагружает плагин
+	 */
+	public void reload()
+	{
+		// TODO: Остановка всех игр
+		// TODO: Удалить все арены из памяти
+		// TODO: Загрузить всё обратно
+	}
+	
+	/**
+	 * Загружает все yml файлы, все арены, игроков. Инициализирует скорборд. <br>
+	 */
 	public void loadAll()
 	{
 		Logs.send("Loading configuration");
@@ -56,12 +86,6 @@ public class MainTowers extends JavaPlugin
 		Configurations.loadSettings();
 		Logs.send("§aSettings has loaded");
 
-		getServer().getPluginManager().registerEvents(new MainEvents(), this);
-		getServer().getPluginCommand("towers").setExecutor(new MainTowersCommand());
-
-
-		Logs.sendDebugMessage(Bukkit.getVersion());
-		Logs.sendDebugMessage(Bukkit.getBukkitVersion());
 
 
 		Logs.send("Loading scoreboard system");
@@ -76,11 +100,14 @@ public class MainTowers extends JavaPlugin
 		GameArenas.loadArenas();
 		Logs.send("§aArenas has loaded");
 	}
-
+	
+	/**
+	 * @return Объект класса WorldEditPlugin. Null, если WorldEdit не установлен на сервере.
+	 */
 	public WorldEditPlugin getWorldEdit(){
 		if (wePlugin != null) return wePlugin;
 		Plugin p = getServer().getPluginManager().getPlugin("WorldEdit");
-		return (p instanceof WorldEditPlugin) ? wePlugin = (WorldEditPlugin) p : null;
+		return (p instanceof WorldEditPlugin && p != null) ? wePlugin = (WorldEditPlugin) p : null;
 	}
 	
 	/**
