@@ -202,6 +202,10 @@ public class MainTowersCommand implements CommandExecutor {
                                     .replaceAll("%arena%", arena));
                             return true;
                         }
+                        else
+                        {
+                            gameArena.setLobbyLocation(player.getLocation());
+                        }
                         if(args[2].equalsIgnoreCase("setlobby"))
                         {
 
