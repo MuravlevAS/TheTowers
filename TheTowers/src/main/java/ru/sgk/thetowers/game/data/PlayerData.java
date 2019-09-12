@@ -60,16 +60,21 @@ public class PlayerData
 		if (customBoard == null) registerBoard();
 		return customBoard;
 	}
-
+	/**
+	 * Регистрация скорборда
+	 */
 	public void registerBoard() 
 	{
 		customBoard = new SimpleScoreboard(Board.getTitle());
 	}
-	
+	/**
+	 * Отправка скорборда игроку
+	 */
 	public void sendScoreboard()
 	{
 		customBoard.send(player);	
 	}
+
 	public static void add(Player player)
 	{
 		for (PlayerData data : dataList)
@@ -86,12 +91,17 @@ public class PlayerData
 	{
 		dataList.removeIf((data) -> data.getPlayer().equals(player));
 	}
-
+	
+	/**
+	 * При запуске игры, у игрока включается режим полёта. wasFlying нужен для того, что бы понять, мог ли игрок летать до этого
+	 * (например, игрок мог быть в креативе) и после окончания игры выдать или забрать режим полёта.  
+	 * @return true, если игрок перед заходом в игру мог летать, в противном случае false 
+	 */
 	public boolean wasFlying()
 	{
 		return wasFlying;
 	}
-
+	
 	public void setWasFlying(boolean wasFlying) {
 		this.wasFlying = wasFlying;
 	}
