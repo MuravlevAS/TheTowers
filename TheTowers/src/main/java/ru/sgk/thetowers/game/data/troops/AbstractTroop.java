@@ -1,23 +1,27 @@
 package ru.sgk.thetowers.game.data.troops;
 
-import com.google.common.collect.Lists;
-import net.minecraft.server.v1_14_R1.EntityInsentient;
-import net.minecraft.server.v1_14_R1.PathEntity;
-import net.minecraft.server.v1_14_R1.PathfinderGoal;
+import java.util.List;
+import java.util.Objects;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
+
+import com.google.common.collect.Lists;
+
+import net.minecraft.server.v1_14_R1.EntityInsentient;
+import net.minecraft.server.v1_14_R1.PathEntity;
+import net.minecraft.server.v1_14_R1.PathfinderGoal;
 import ru.sgk.thetowers.game.data.teams.GameTeam;
 import ru.sgk.thetowers.utils.CustomPathfinder;
-
-import java.util.List;
-import java.util.Objects;
 
 public abstract class AbstractTroop
 {
@@ -117,7 +121,7 @@ public abstract class AbstractTroop
 	public void move(Location loc)
 	{
         EntityInsentient insentient = ((EntityInsentient)((CraftEntity)entity).getHandle());
-        PathEntity pathEntity = insentient.getNavigation().a(loc.getBlockX(), loc.getBlockX(), loc.getBlockX(),0);
+//        PathEntity pathEntity = insentient.getNavigation().a(loc.getBlockX(), loc.getBlockX(), loc.getBlockX(),0);
 //        insentient.getNavigation().a(pathEntity, 1D);
         insentient.targetSelector.a(PathfinderGoal.Type.MOVE);
 
@@ -242,13 +246,13 @@ public abstract class AbstractTroop
 
 	public void update(){
 		// TODO: update troops
-		int x = entity.getLocation().getBlockX();
-		int y = entity.getLocation().getBlockY();
-		int z = entity.getLocation().getBlockZ();
-		// d - destination
-		int dx = movingTo.getBlockX();
-		int dy = movingTo.getBlockY();
-		int dz = movingTo.getBlockZ();
+//		int x = entity.getLocation().getBlockX();
+//		int y = entity.getLocation().getBlockY();
+//		int z = entity.getLocation().getBlockZ();
+//		// d - destination
+//		int dx = movingTo.getBlockX();
+//		int dy = movingTo.getBlockY();
+//		int dz = movingTo.getBlockZ();
 
 		moveNext();
 

@@ -29,7 +29,6 @@ public class MainTowers extends JavaPlugin
 		instance = this;
 		loadAll();
 		Logs.send("§aPlugin has enabled.");
-		ConfigurationSection sect = Configurations.getLocale().getConfigurationSection("commands.towers.arenas");
 	}
 	
 	public void onDisable()
