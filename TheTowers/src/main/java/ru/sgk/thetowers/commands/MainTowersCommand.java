@@ -16,9 +16,9 @@ import com.sk89q.worldedit.math.BlockVector3;
 
 import ru.sgk.thetowers.MainTowers;
 import ru.sgk.thetowers.data.Configurations;
-import ru.sgk.thetowers.game.GameArena;
-import ru.sgk.thetowers.game.GameArenas;
 import ru.sgk.thetowers.game.data.PlayerData;
+import ru.sgk.thetowers.game.data.arenas.GameArena;
+import ru.sgk.thetowers.game.data.arenas.GameArenas;
 import ru.sgk.thetowers.game.data.teams.GameTeam;
 import ru.sgk.thetowers.game.data.teams.GameTeamArea;
 import ru.sgk.thetowers.game.data.teams.GameTeamColor;

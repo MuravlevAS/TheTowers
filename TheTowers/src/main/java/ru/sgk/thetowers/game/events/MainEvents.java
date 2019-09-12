@@ -6,9 +6,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.TabCompleteEvent;
-import ru.sgk.thetowers.game.GameArenas;
+
 import ru.sgk.thetowers.game.data.teams.GameTeamColor;
 import ru.sgk.thetowers.game.data.PlayerData;
+import ru.sgk.thetowers.game.data.arenas.GameArenas;
 
 import java.util.List;
 

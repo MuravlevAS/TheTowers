@@ -10,8 +10,8 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
 import ru.sgk.thetowers.commands.MainTowersCommand;
 import ru.sgk.thetowers.data.Configurations;
-import ru.sgk.thetowers.game.GameArenas;
 import ru.sgk.thetowers.game.data.PlayerData;
+import ru.sgk.thetowers.game.data.arenas.GameArenas;
 import ru.sgk.thetowers.game.events.MainEvents;
 import ru.sgk.thetowers.scoreboard.Board;
 import ru.sgk.thetowers.utils.Logs;

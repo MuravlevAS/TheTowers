@@ -1,5 +1,7 @@
 package ru.sgk.thetowers.game;
 
+import ru.sgk.thetowers.game.data.arenas.GameArena;
+import ru.sgk.thetowers.game.data.arenas.GameArenas;
 import ru.sgk.thetowers.utils.GameScheduler;
 
 public class GameProcess {
