@@ -79,7 +79,14 @@ public class MainTowers extends JavaPlugin
 		Logs.init();
 
 		Logs.send("Loading locales");
+		try {
 		Configurations.loadLocale(Configurations.getConfig().getString("lang"));
+		} catch(NullPointerException e)
+		{
+			Logs.send("§cFile locales_" + Configurations.getConfig().getString("lang") + ".yml not found");
+			Logs.send("Load default location file locales_ru.yml");
+			Configurations.loadLocale("ru");
+		}
 		Logs.send("§aLocales has loaded");
 
 		Logs.send("Loading settings");
