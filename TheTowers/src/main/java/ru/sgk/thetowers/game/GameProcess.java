@@ -37,12 +37,13 @@ public class GameProcess {
 	 */
 	public void start()
 	{
-		// обнуляем всех переменных  
+		// обнуляем все переменные  
 		tmpTimer = 0;
 		mainCounter = 0;
 		seconds = 0;
-
+	
 		started = false;
+		// Запускаем игровой процесс
 		threadId = GameScheduler.scheduleTask(this::update, 0);
 	}
 
