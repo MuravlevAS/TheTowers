@@ -111,14 +111,18 @@ public abstract class AbstractTroop
 		this.setSpawnLocation(loc);
 		spawn();
 	}
-	
+	/**
+	 * Деспавнит моба. После выполнения despawned = true 
+	 */
 	public void despawn(){
 		if (entity != null) {
 			entity.remove();
 			despawned = true;
 		}
 	}
-
+	/**
+	 * Убивает моба. После выполнения isKilled = true;
+	 */
 	public void kill(){
 		if (entity != null){
 			isKilled = true;
@@ -126,7 +130,10 @@ public abstract class AbstractTroop
 
 		}
 	}
-	
+	/**
+	 * Дамажит моба
+	 * @param damage - сколько дамага нанести мобу
+	 */
 	public void sendDamage(double damage){
 		if (entity != null){
 			if (damage >= entity.getHealth())
@@ -163,7 +170,6 @@ public abstract class AbstractTroop
 		int dx = movingTo.getBlockX();
 		int dy = movingTo.getBlockY();
 		int dz = movingTo.getBlockZ();
-
         if (wayPoints.size() >= currentWayPoint)
         {
             if (movingTo == null || (x == dx && y == dy && z == dz))
@@ -177,12 +183,15 @@ public abstract class AbstractTroop
         {
             move(endLocation);
         }
+        // Если моб достиг конца, заканчиваем его путешествие.
         if (movingTo.equals(endLocation) && (x == dx && y == dy && z == dz))
         {
             endMoving();
         }
 	}
-
+	/**
+	 * Деспавнит моба и наносит урон команде, которой моб пренадлежит
+	 */
 	public void endMoving()
     {
         parentTeam.sendDamage(this);
