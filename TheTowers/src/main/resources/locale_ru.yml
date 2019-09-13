@@ -76,6 +76,8 @@ commands:
       removearena: '%prefix% &aАрена &3%arena% &aуспешно удалена!'
       placingmodeoff: '%prefix% &aРежим установки блоков для башен выключен!'
       such-arena-is-not-exist: '%prefix% &cАрены с названием &f%arena% не существует!'
+      team-size-wrong-format: '%prefix% &cНеверный формат. Размер команды должен быть целым числом'
+      team-size-less-than-zero: '%prefix% &cРазмер команды должен быть больше ноля.'
     miscellanea:
       reload: '%prefix% &aКонфиг успешно перезагружен!'
       quickstart: '%prefix% &aИгра успешно начата!'

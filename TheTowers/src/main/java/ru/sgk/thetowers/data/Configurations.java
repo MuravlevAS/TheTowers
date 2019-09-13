@@ -281,7 +281,7 @@ public class Configurations
 	/**
 	 * @return строку, соответствующую языку локализации, которая была ранее загружена методом {@link #loadLocale(String) loadLocale()}
 	 */
-	public static String getLocaleString() 
+	public static String getLangString() 
 	{
 		return localeString;
 	}
