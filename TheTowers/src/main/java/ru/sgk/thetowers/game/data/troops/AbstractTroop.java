@@ -24,26 +24,36 @@ import ru.sgk.thetowers.utils.CustomPathfinder;
 
 public abstract class AbstractTroop
 {
-
-	public static List<AbstractTroop> allSpawnedTroops = Lists.newArrayList();
+	/** Секция моба в конфиге*/
 	protected ConfigurationSection configSection;
 	private String title;
 	private double damage;
 	private double speed;
+	/** Стоимость одного моба при посылании его (на хуй) другой команде*/
 	private double cost;
 	private double health;
+	/** Сколько денег принесёт при убийстве*/
 	private double killed;
+	/** Сам моб*/
 	private LivingEntity entity;
+	/** Тип моба*/
 	private EntityType mobType;
+	/** Локация спавна*/
 	private Location spawnLocation;
+	/** Локация конца пути*/
 	private Location endLocation;
 	private List<Location> wayPoints;
-	private Entity entityTemplate;
+	/** Был ли моб убит */
 	private boolean isKilled;
+	/** Является ли моб невидимым*/
 	private boolean invisible = false;
+	/** Текущая точка пути*/
 	private int currentWayPoint;
+	/** Куда моб направляется в данное время*/
     private Location movingTo;
+    /** Команда, к которой моб относится*/
     private GameTeam parentTeam;
+    /** Был ли моб деспавнен. true, когда моб доходит до конца и наносит урон команде*/
 	private boolean despawned;
 
 	public AbstractTroop(GameTeam parentTeam)
@@ -52,26 +62,33 @@ public abstract class AbstractTroop
 		currentWayPoint = 0;
 		despawned = false;
 	}
-
-	public void spawn() throws NullPointerException
+	/**
+	 * Спавнит моба в его spawnLocation
+	 */
+	public void spawn()
 	{
 		if (entity == null)
 		{
-			entity = (LivingEntity) Objects.requireNonNull(spawnLocation.getWorld()).spawnEntity(spawnLocation, mobType);
-
+			// Спавним моба.
+			entity = (LivingEntity) spawnLocation.getWorld().spawnEntity(spawnLocation, mobType);
+			// Устанавливаем ему кастомное имя, что быб он вдруг не деспавнился
             entity.setCustomName(ChatColor.UNDERLINE + "");
-
+            // Устанавливаем ему скорость передвижения и количество здоровья
 			entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(speed);
 			entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+			entity.setHealth(health);
+			entity.setRemoveWhenFarAway(false);
+			
+			entity.setCollidable(false);
+			// Деаем моба неуязвимым, что бы игроки не могли его убить своими погаными ручками
+			entity.setInvulnerable(true);
+			// Надеваем мобу кнопку на голову, что бы не горел, если это зомби или скелет.
 			try
 			{
 				entity.getEquipment().clear();
 				entity.getEquipment().setHelmet(new ItemStack(Material.STONE_BUTTON));
 			}
 			catch (Exception e) {}
-			entity.setHealth(health);
-
-			entity.setRemoveWhenFarAway(false);
 
 			if (entity instanceof Zombie)
 			{
@@ -82,17 +99,19 @@ public abstract class AbstractTroop
 				entity.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(speed);
 			} catch (Exception e) {
 			}
-			entity.setCollidable(false);
-			entity.setInvulnerable(true);
 		}
 //		EntityLiving living = (EntityLiving) entity;
 //		living.setSlot(EnumItemSlot.HEAD, new ItemStack(Blocks.STONE_BUTTON));
 	}
+	/**
+	 * Спавнит моба в определённой локации. Перед спавном просто вызывает {@link #setSpawnLocation(Location) setSpawnLocation(loc)); 
+	 * @param loc Локация, в которой моб будет заспавнен
+	 */
 	public void spawn(Location loc) {
 		this.setSpawnLocation(loc);
 		spawn();
 	}
-
+	
 	public void despawn(){
 		if (entity != null) {
 			entity.remove();
@@ -107,7 +126,7 @@ public abstract class AbstractTroop
 
 		}
 	}
-
+	
 	public void sendDamage(double damage){
 		if (entity != null){
 			if (damage >= entity.getHealth())
@@ -386,15 +405,5 @@ public abstract class AbstractTroop
 	public void setMobType(EntityType mobType) 
 	{
 		this.mobType = mobType;
-	}
-
-	public Entity getEntityTemplate()
-	{
-		return entityTemplate;
-	}
-
-	public void setEntityTemplate(Entity entityTemplate)
-	{
-		this.entityTemplate = entityTemplate;
 	}
 }

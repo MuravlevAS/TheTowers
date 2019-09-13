@@ -9,18 +9,25 @@ import java.util.List;
 
 public abstract class AbstractTower
 {
+	/** Имя башни */
 	private String title;
+	/** Описание башни*/
 	private List<String> description;
+	/** Текущий уровень башни*/
 	private TowerLevel currentLevel;
+	/** Позиция башни*/
 	private Location location;
+	/** Стоимость покупки башки*/
 	private double cost;
-	/**
-	 * Значение в мс
-	 */
+	/** Время перезарядки. Значение в мс */
 	private long rechargeTime;
+	
 	private TowerLevel maxLevel = TowerLevel.E;
+	/** Радиус действия башни*/
 	private double radius;
+	/** Урон, который башня наносит мобам*/
 	private double damage;
+	/** Секция башни в конфиге */
 	protected ConfigurationSection configSection;
 	private EntityType mobType;
 
@@ -38,11 +45,17 @@ public abstract class AbstractTower
 //		this.mobType = mobType;
 //	}
 
-
+	/**
+	 * Устанавливает переменные башни в соответствии с её уровнем.
+	 */
 	public abstract void setSettings();
 
 	public abstract void update();
 
+	/**
+	 * Повышает уровень башни.
+	 * Если Уровень башни достиг максимума, он не изменяется
+	 */
 	public void upgrade()
 	{
 		if (currentLevel == maxLevel) return;
@@ -52,7 +65,10 @@ public abstract class AbstractTower
 		else if (currentLevel == TowerLevel.D) currentLevel = TowerLevel.E;
 		setSettings();
 	}
-	
+	/**
+	 * Понижение уровня башни на один уровень.
+	 * Если уровень башни достиг минимального, он не изменяется
+	 */
 	public void downgrade()
 	{
 		if (currentLevel == TowerLevel.A) return;
@@ -147,6 +163,7 @@ public abstract class AbstractTower
 	{
 		return configSection.getString(path).replaceAll("&", "§");
 	}
+	
 	
 	protected final List<String> getStringList(String path)
 	{

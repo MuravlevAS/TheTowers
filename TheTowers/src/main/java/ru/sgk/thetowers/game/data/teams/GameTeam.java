@@ -15,15 +15,25 @@ import ru.sgk.thetowers.game.data.troops.AbstractTroop;
 
 public class GameTeam
 {
+	/** Цвет команды */
     private GameTeamColor color;
+    /** Количество денег у команды*/
     private int coins;
+    /** Установленные башни*/
     private List<AbstractTower> placedTowers;
+    /** Спавн мобов*/
     private Location troopSpawn;
+    /** Точки их пути. Нужны для определения поворотов*/
     private List<Location> troopWay;
+    /** Конечная точка пути мобов*/
     private Location troopsEnd;
+    /** Область команды. То, где игроки в команде смогут находиться*/
     private GameTeamArea teamArea;
+    /** Игроки*/
     private List<Player> players;
+    /** Блоки, на которые можно ставить башни*/
     private List<Block> towerBlocks;
+    /** Жизни команды*/
     private double health;
 
     public GameTeam(GameTeamColor color) {
@@ -44,12 +54,12 @@ public class GameTeam
     public void update() {
 
     }
-
+    
     public void setArea(GameTeamArea area)
     {
         this.teamArea = area;
     }
-
+    
     public void spawnTroop(AbstractTroop troop)
     {
         troop.setSpawnLocation(troopSpawn);
@@ -63,12 +73,20 @@ public class GameTeam
     {
     	return health;
     }
-
+    /**
+     * Отправить урон команде
+     * @param damager моб, который нанёс урон
+     */
     public void sendDamage(AbstractTroop damager)
     {
         health -= damager.getDamage();
     }
-
+    /**
+     * Отправить другой команде мобов
+     * @param sender - тот, кто отправляет
+     * @param teamToSend - тот, кому отправить 
+     * @param troops - мобы, которых нужно отправить 
+     */
     public void sendTroops(Player sender, GameTeam teamToSend, AbstractTroop... troops)
     {
         for (AbstractTroop t : troops)
