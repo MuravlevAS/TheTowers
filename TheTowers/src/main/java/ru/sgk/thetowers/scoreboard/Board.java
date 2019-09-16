@@ -70,7 +70,7 @@ public class Board implements Runnable
 		{
 			linesLobby.forEach((s, i) -> 
 			{
-				p.getBoard().add(s.replaceAll("%castle_health%", p.getCastleHealth()+""), i);
+				p.getBoard().add(s, i);
 			});
 			p.getBoard().update();
 			p.getBoard().send(p.getPlayer());
