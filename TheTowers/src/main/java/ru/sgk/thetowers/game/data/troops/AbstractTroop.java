@@ -1,7 +1,6 @@
 package ru.sgk.thetowers.game.data.troops;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -190,7 +189,7 @@ public abstract class AbstractTroop
         }
 	}
 	/**
-	 * Деспавнит моба и наносит урон команде, которой моб пренадлежит
+	 * Деспавнит моба и наносит урон команде, которой моб пренадлежит.
 	 */
 	public void endMoving()
     {

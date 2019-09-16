@@ -1,16 +1,15 @@
 lang: ru
 debug: true
 scoreboard:
+  title: '&7&lTheTowers'
   lobby:
-    title: '&7&lTheTowers'
     lines:
       - '&0'
       - '&fПобед: &c%towers_wins%'
       - '&fПроигрышей: &c%towers_loses%'
       - '&1'
       - '&espigotmc.ru'
-  ingame:
-    title: '&7&lTheTowers'
+  in-game:
     lines:
       - '&0'
       - '&fЖизней: &c%castle_health%❤'
@@ -18,7 +17,6 @@ scoreboard:
       - '&1'
       - '&espigotmc.ru'
   waiting:
-    title: '&7&lTheTowers'
     lines:
       - '&0'
       - '&fОжидание'

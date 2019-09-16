@@ -1,26 +1,27 @@
 package ru.sgk.thetowers.scoreboard;
 
-import com.google.gson.internal.LinkedTreeMap;
-import org.bukkit.Bukkit;
-import ru.sgk.thetowers.MainTowers;
-import ru.sgk.thetowers.data.Configurations;
-import ru.sgk.thetowers.game.data.PlayerData;
-
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.Bukkit;
+
+import ru.sgk.thetowers.MainTowers;
+import ru.sgk.thetowers.data.Configurations;
+import ru.sgk.thetowers.game.data.PlayerData;
+
 public class Board implements Runnable
 {
-//	private static ScoreboardManager sbManager = Bukkit.getScoreboardManager();
-
-//	private static SimpleScoreboard board;
-
-	static Map<String,Integer> lines = new ConcurrentHashMap<>();
+	private static Map<String, Integer> linesLobby = new ConcurrentHashMap<>();
+	private static Map<String, Integer> linesInGame = new ConcurrentHashMap<>();
+	private static Map<String, Integer> linesWaiting = new ConcurrentHashMap<>();
+	
+	private static String title;
+	
 	public static void initScoreboard()
 	{
 		getConfigList();
+		title = Configurations.getConfig().getString("scoreboard.title").replaceAll("&", "§");
 //		board = new SimpleScoreboard(getTitle());
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(MainTowers.getInstance(), new Board(), 0, 1);
 	}
@@ -28,18 +29,38 @@ public class Board implements Runnable
 	private static void getConfigList()
 	{
 		List<String> list = Configurations.getConfig().getStringList("scoreboard.lobby.lines");
-		lines = Collections.synchronizedMap(new LinkedTreeMap<String, Integer>());
+		linesLobby = new ConcurrentHashMap<>();
 		int i = 15;
 		for (String s : list)
 		{
 			if (i == 0) break;
-			lines.put(s, i--);
+			linesLobby.put(s, i--);
 		}
+		
+		list = Configurations.getConfig().getStringList("scoreboard.in-game.lines");
+		linesInGame = new ConcurrentHashMap<>();
+		i = 15;
+		for (String s : list)
+		{
+			if (i == 0) break;
+			linesInGame.put(s, i--);
+		}
+		
+		list = Configurations.getConfig().getStringList("scoreboard.waiting.lines");
+		linesWaiting = new ConcurrentHashMap<>();
+		i = 15;
+		for (String s : list)
+		{
+			if (i == 0) break;
+			linesWaiting.put(s, i--);
+		}
+		
 	}
 	public static String getTitle()
 	{
-		return Configurations.getConfig().getString("scoreboard.lobby.title");
+		return title;
 	}
+	
 	private static int i = 0;
 	@Override
 	public void run() 
@@ -47,7 +68,7 @@ public class Board implements Runnable
 		PlayerData.getDataList().stream().forEach((PlayerData p) ->
 		//for (PlayerData p : PlayerData.getOnlinePlayers())
 		{
-			lines.forEach((s, i) -> 
+			linesLobby.forEach((s, i) -> 
 			{
 				p.getBoard().add(s.replaceAll("%castle_health%", p.getCastleHealth()+""), i);
 			});
