@@ -12,7 +12,7 @@ scoreboard:
   in-game:
     lines:
       - '&0'
-      - '&fЖизней: &c%castle_health%❤'
+      - '&fЖизней: &c%health%❤'
       - '&fБаланс: &c%money%⏣'
       - '&1'
       - '&espigotmc.ru'
@@ -20,7 +20,8 @@ scoreboard:
     lines:
       - '&0'
       - '&fОжидание'
-      - '&fигроков...'
+      - '&fДо начала:'
+      - '&f%time%'
       - '&1'
       - '&a%players%&6/&2%max_players%'
       - '&2'

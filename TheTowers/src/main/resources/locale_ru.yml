@@ -107,4 +107,4 @@ game:
   win-title: '&aПОБЕДА!'
   lose-title: '&cПРОИГРЫШ!'
   cant-place: '&cВы не можете ставить башни здесь!'
-
+  waiting-for-players: 'Ждём игроков.'

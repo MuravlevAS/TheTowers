@@ -166,14 +166,16 @@ public class Configurations
 	 * @param path - путь в конфиге 
 	 * @return
 	 */
-	public static String getLocaleString(String path){
+	public static String getLocaleString(String path)
+	{
 		return getLocale().getString(path).replaceAll("%prefix%", getLocale().getString("prefix")).replaceAll("&", "§");
 	}
 	/**
 	 * Поулчает список строк из файла с локализацией 
 	 * @param path - путь в конфиге
 	 */
-	public static List<String> getLocaleStringList(String path){
+	public static List<String> getLocaleStringList(String path)
+	{
 		List<String> l1 = new ArrayList<>();
 		List<String> l2 = getLocale().getStringList(path);
 		for (String s : l2)

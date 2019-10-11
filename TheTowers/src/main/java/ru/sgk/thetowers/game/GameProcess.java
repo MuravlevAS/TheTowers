@@ -23,6 +23,11 @@ public class GameProcess {
 	private boolean started;
 	/** Время (в мс), после истечения которого начинается игра. */
 	private int startedTime;
+	/** Таймер отсчёта времени до начала игра */
+	private int startedTimer;
+	
+	private GameState state;
+	
 	
 	/**
 	 * Создаёт игровой процесс относящийся к арене <i>arena</i>
@@ -83,9 +88,36 @@ public class GameProcess {
 		mainCounter++;
 		if (tmpTimerOn) tmpTimer++;
 	}
-	/**
-	 * 
-	 * @return глобальный счётчик игры.
-	 */
-
+	
+	public GameState getState() 
+	{
+		return state;
+	}
+	
+	public void setState(GameState state) 
+	{
+		this.state = state;
+	}
+	public int getStartedTime() 
+	{
+		return startedTime;
+	}
+	
+	public void setStartedTime(int startedTime) 
+	{
+		this.startedTime = startedTime;
+	}
+	
+	public int getStartedTimer()
+	{
+		return startedTimer;
+	}
+	
+	public void setStartedTimer(int startedTimer) 
+	{
+		this.startedTimer = startedTimer;
+	}
+	
+	
+	
 }

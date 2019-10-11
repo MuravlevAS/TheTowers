@@ -1,12 +1,14 @@
 package ru.sgk.thetowers.game.data;
 
-import org.bukkit.entity.Player;
-import ru.sgk.thetowers.scoreboard.Board;
-import ru.sgk.thetowers.scoreboard.SimpleScoreboard;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.bukkit.entity.Player;
+
+import ru.sgk.thetowers.game.GameProcess;
+import ru.sgk.thetowers.scoreboard.Board;
+import ru.sgk.thetowers.scoreboard.SimpleScoreboard;
 
 public class PlayerData 
 {
@@ -15,6 +17,8 @@ public class PlayerData
 	private static List<PlayerData> dataList = Collections.synchronizedList( new ArrayList<>());
 	private SimpleScoreboard customBoard = null;
 	private boolean wasFlying;
+	private GameProcess game;
+	private double money;
 	
 	public PlayerData(Player player) {
 		this.player = player;
@@ -105,4 +109,24 @@ public class PlayerData
 	public void setWasFlying(boolean wasFlying) {
 		this.wasFlying = wasFlying;
 	}
+
+	public GameProcess getGame() 
+	{
+		return game;
+	}
+
+	public void setGame(GameProcess game) 
+	{
+		this.game = game;
+	}
+
+	public double getMoney() {
+		return money;
+	}
+
+	public void setMoney(double money) {
+		this.money = money;
+	}
+	
+	
 }

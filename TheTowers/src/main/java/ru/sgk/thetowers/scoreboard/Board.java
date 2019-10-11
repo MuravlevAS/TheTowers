@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 
 import ru.sgk.thetowers.MainTowers;
 import ru.sgk.thetowers.data.Configurations;
+import ru.sgk.thetowers.game.GameProcess;
+import ru.sgk.thetowers.game.GameState;
 import ru.sgk.thetowers.game.data.PlayerData;
 
 public class Board implements Runnable
@@ -30,7 +32,8 @@ public class Board implements Runnable
 	{
 		List<String> list = Configurations.getConfig().getStringList("scoreboard.lobby.lines");
 		linesLobby = new ConcurrentHashMap<>();
-		int i = 15;
+		final int maxI = 16;
+		int i = maxI;
 		for (String s : list)
 		{
 			if (i == 0) break;
@@ -39,7 +42,7 @@ public class Board implements Runnable
 		
 		list = Configurations.getConfig().getStringList("scoreboard.in-game.lines");
 		linesInGame = new ConcurrentHashMap<>();
-		i = 15;
+		i = maxI;
 		for (String s : list)
 		{
 			if (i == 0) break;
@@ -48,7 +51,7 @@ public class Board implements Runnable
 		
 		list = Configurations.getConfig().getStringList("scoreboard.waiting.lines");
 		linesWaiting = new ConcurrentHashMap<>();
-		i = 15;
+		i = maxI;
 		for (String s : list)
 		{
 			if (i == 0) break;
@@ -66,12 +69,38 @@ public class Board implements Runnable
 	public void run() 
 	{
 		PlayerData.getDataList().stream().forEach((PlayerData p) ->
-		//for (PlayerData p : PlayerData.getOnlinePlayers())
 		{
-			linesLobby.forEach((s, i) -> 
+			GameProcess proc = p.getGame();
+			if (proc != null)
 			{
-				p.getBoard().add(s, i);
-			});
+				GameState gameState = proc.getState();
+				if (gameState == GameState.ACTIVE)
+				{
+					linesInGame.forEach((s,i) ->
+					{
+						p.getBoard().add(s.replaceAll("%health%", String.valueOf(p.getCastleHealth())).replaceAll("%money%", String.valueOf(p.getMoney())), i);
+					});
+					
+				}
+				else
+				{
+					// Если статус игры - "в ожидании" -  
+					// Отнимаем из полного времени до начала таймер начала игры и получаем время, оставшееся до начала игры
+					// Иначе выводим сообщение об ожидании игроков
+					String waitingTime = (gameState == GameState.WAITING) ? String.valueOf((int)((proc.getStartedTime() - proc.getStartedTimer())/1000)) : Configurations.getLocaleString("game.waiting-for-players");
+					linesWaiting.forEach((s,i)->
+					{
+						p.getBoard().add(s.replace("%time%", waitingTime), i);
+					});
+				}
+			}
+			else
+			{
+				linesLobby.forEach((s, i) -> 
+				{
+					p.getBoard().add(s, i);
+				});
+			}
 			p.getBoard().update();
 			p.getBoard().send(p.getPlayer());
 		});
